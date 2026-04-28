@@ -40,7 +40,6 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: var(--sans);
     background: var(--bg);
@@ -67,10 +66,7 @@
     line-height: 1.2;
   }
 
-  .header-left h1 span {
-    color: var(--accent);
-  }
-
+  .header-left h1 span { color: var(--accent); }
   .tagline {
     font-family: var(--mono);
     font-size: 10px;
@@ -94,11 +90,7 @@
     line-height: 1.4;
   }
 
-  .theme-toggle:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
   .theme-toggle .icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
   .main {
@@ -107,10 +99,7 @@
     padding: 24px 20px;
   }
 
-  .search-wrap {
-    position: relative;
-    margin-bottom: 28px;
-  }
+  .search-wrap { position: relative; margin-bottom: 28px; }
 
   .search-input {
     width: 100%;
@@ -133,8 +122,7 @@
   .search-icon {
     position: absolute;
     right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 16px;
     color: var(--text-muted);
     pointer-events: none;
     font-size: 18px;
@@ -147,22 +135,111 @@
     overflow: hidden;
     margin-top: 6px;
     display: none;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .results-list.visible { display: block; }
 
-  .result-item {
-    padding: 12px 18px;
-    cursor: pointer;
+  .ambiguity-notice {
+    padding: 14px 18px;
+    background: var(--accent-light);
     border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  [data-theme="dumsor"] .ambiguity-notice {
+    background: var(--slot-bg);
+    color: var(--text-muted);
+  }
+
+  .ambiguity-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .status-button {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-button:hover { border-color: var(--accent); color: var(--accent); }
+  .status-button.active { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+
+  [data-theme="dumsor"] .status-button { background: var(--slot-bg); border-color: var(--text-muted); }
+  [data-theme="dumsor"] .status-button:hover { border-color: var(--accent); color: var(--accent); }
+  [data-theme="dumsor"] .status-button.active { background: var(--accent); color: var(--slot-bg); border-color: var(--accent); }
+
+  .hint-message {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: var(--surface);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text);
+    line-height: 1.6;
+    display: none;
+  }
+
+  .hint-message.visible { display: block; }
+  [data-theme="dumsor"] .hint-message { background: var(--slot-bg); }
+  .hint-message strong { color: var(--accent); }
+
+  .area-card {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
     transition: background 0.15s;
   }
 
-  .result-item:last-child { border-bottom: none; }
-  .result-item:hover { background: var(--accent-light); }
+  .area-card:last-child { border-bottom: none; }
+  .area-card:hover { background: var(--accent-light); }
+  [data-theme="dumsor"] .area-card:hover { background: var(--slot-bg); }
 
-  .result-name { font-weight: 700; font-size: 14px; }
-  .result-meta { font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .area-card-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .area-card-name { font-size: 14px; font-weight: 700; }
+  .area-card-group {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  [data-theme="dumsor"] .area-card-group { background: var(--accent-light); color: var(--accent); }
+
+  .area-card-region {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+  }
+
+  .area-card-region strong { color: var(--text); }
 
   .no-results {
     padding: 16px 18px;
@@ -171,7 +248,6 @@
     color: var(--text-muted);
   }
 
-  /* Status card */
   .status-card {
     background: var(--surface);
     border: 2px solid var(--border);
@@ -183,16 +259,8 @@
 
   .status-card.visible { display: block; }
 
-  .status-header {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .area-name {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
-  }
+  .status-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+  .area-name { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
 
   .group-badge {
     display: inline-flex;
@@ -208,12 +276,7 @@
     font-weight: 700;
   }
 
-  .current-status {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+  .current-status { padding: 20px; display: flex; align-items: center; gap: 14px; }
 
   .status-indicator {
     width: 52px;
@@ -242,62 +305,24 @@
     50% { box-shadow: 0 0 0 8px rgba(26,107,42,0); }
   }
 
-  [data-theme="dumsor"] .status-indicator.on {
-    animation: pulse-amber 2s infinite;
-  }
+  [data-theme="dumsor"] .status-indicator.on { animation: pulse-amber 2s infinite; }
 
   @keyframes pulse-amber {
     0%, 100% { box-shadow: 0 0 0 0 rgba(64,192,96,0.4); }
     50% { box-shadow: 0 0 0 10px rgba(64,192,96,0); }
   }
 
-  .status-text-wrap {}
-  .status-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .status-main {
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-    margin-top: 2px;
-  }
-
+  .status-label { font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+  .status-main { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; margin-top: 2px; }
   .status-main.on { color: var(--on-green); }
   .status-main.off { color: var(--off-red); }
 
-  .status-until {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
+  .status-until { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
-  /* Timetable */
-  .timetable {
-    border-top: 1px solid var(--border);
-    padding: 16px 20px 20px;
-  }
+  .timetable { border-top: 1px solid var(--border); padding: 16px 20px 20px; }
+  .timetable-title { font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
 
-  .timetable-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-
-  .slots {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .slots { display: flex; flex-direction: column; gap: 8px; }
 
   .slot {
     display: flex;
@@ -309,24 +334,10 @@
     border: 1px solid transparent;
   }
 
-  .slot.current-slot {
-    border-color: var(--accent);
-    background: var(--accent-light);
-  }
+  .slot.current-slot { border-color: var(--accent); background: var(--accent-light); }
 
-  .slot-time {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    width: 110px;
-    flex-shrink: 0;
-  }
-
-  .slot-name {
-    font-size: 13px;
-    font-weight: 600;
-    flex: 1;
-  }
+  .slot-time { font-family: var(--mono); font-size: 11px; color: var(--text-muted); width: 110px; flex-shrink: 0; }
+  .slot-name { font-size: 13px; font-weight: 600; flex: 1; }
 
   .slot-state {
     font-family: var(--mono);
@@ -336,64 +347,22 @@
     border-radius: 3px;
   }
 
-  .slot-state.on {
-    background: var(--on-green-bg);
-    color: var(--on-green);
-  }
-
-  .slot-state.off {
-    background: var(--off-red-bg);
-    color: var(--off-red);
-  }
+  .slot-state.on { background: var(--on-green-bg); color: var(--on-green); }
+  .slot-state.off { background: var(--off-red-bg); color: var(--off-red); }
 
   .current-slot .slot-time { color: var(--accent); }
-  .slot-now-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+  .slot-now-label { font-family: var(--mono); font-size: 9px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
 
-  /* Last updated */
-  .last-updated {
-    margin-top: 20px;
-    padding: 14px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-
+  .last-updated { margin-top: 20px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-family: var(--mono); font-size: 10px; color: var(--text-muted); line-height: 1.6; }
   .last-updated strong { color: var(--text); }
 
-  /* Disclaimer */
-  .disclaimer {
-    margin-top: 16px;
-    padding: 14px 16px;
-    background: var(--accent-light);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    line-height: 1.7;
-  }
+  .disclaimer { margin-top: 16px; padding: 14px 16px; background: var(--accent-light); border: 1px solid var(--border); border-radius: 8px; font-family: var(--mono); font-size: 10px; color: var(--text-muted); line-height: 1.7; }
 
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 48px 20px;
-  }
-
+  .empty-state { text-align: center; padding: 48px 20px; }
   .empty-state .big-icon { font-size: 48px; margin-bottom: 16px; }
   .empty-state h2 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
   .empty-state p { font-family: var(--mono); font-size: 11px; color: var(--text-muted); line-height: 1.7; }
 
-  /* Footer */
   footer {
     max-width: 600px;
     margin: 32px auto 0;
@@ -411,13 +380,7 @@
   footer a { color: var(--accent); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  .date-display {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-  }
-
+  .date-display { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 20px; }
   .date-display span { color: var(--text); font-weight: 700; }
 
   @media (max-width: 400px) {
@@ -482,8 +445,7 @@
   </div>
 
   <div class="last-updated">
-    <strong>Last updated:</strong> April 27, 2026 —
-    Source: ECG 800MW Global Load Management Timetable (Apr 25 – May 1, 2026)
+    <strong>Last updated:</strong> April 28, 2026 — Source: ECG 800MW Global Load Management Timetable (Apr 25 – May 1, 2026)
   </div>
 
   <div class="disclaimer">
@@ -499,14 +461,8 @@
 
 <script>
 // ─── Data ─────────────────────────────────────────────────────────────────────
-// Inline data (no external fetch needed for static deploy)
 const DATA = {
-  meta: {
-    title: "800MW Load Management Timetable",
-    period: "Saturday 25 Apr – Friday 1 May 2026",
-    source: "ECG 800MW Global Load Management Time Table",
-    last_updated: "2026-04-27"
-  },
+  meta: { title: "800MW Load Management Timetable", period: "Saturday 25 Apr – Friday 1 May 2026", source: "ECG 800MW Global Load Management Time Table", last_updated: "2026-04-27" },
   schedule: {
     timetable: {
       "2026-04-25": { "00:00-06:00": "A", "06:00-12:00": "A", "12:00-18:00": "B", "18:00-00:00": "C" },
@@ -520,14 +476,12 @@ const DATA = {
   }
 };
 
-// Build flat search index: [{name, group, region}]
 const AREAS_RAW = {
-  A: {"VOLTA":["Adidome Township","Akyemfo","Mafi Anfoe","Mepe","Dagorme","Adexor","Battor","Gbagbavuinu","Depe","Kpando Technical","KPASEC","Kpando Township","Kudzra","Ve-Golokwati","Fume","Logba Towns","Jasikan Township","Apenkwa","Bodada Towns","Bowiri Towns","Anfoeta Towns","Dzolokpuita","Amedzofe","Dzologborgame","Kpedze Towns","Shiave","Nyive","Matse","Klefe Towns","Ziavi Towns","Microwave","Alayi","Soldiers Barracks","Akpenamawu","Daabra","Police Depot","Akoefe","Kpenoe","Hodzoga","Tanyigbe","Mafi Towns","Aflao Township","Cross Border Towns","Kudje","Worawora","Tapa Amanya","Kwamekrom","Asiekpe","Kutime","Adaklu Sofa","Adaklu Waya","Kpoeta","Hohoe"],"ACCRA":["South Odorkor","St. Anthony","Lawyer Kom","Baah Yard","Odorgonno","Awoshie Massalatsi","Victory Bible Church","Been-To","Trasacco Estates","Opeibia","Coffee Farmers Association","Adabraka Free Town","Catholic Book Centre","Government Boys","GNTC Bottling","Nayak","Dome New Market","Agingo","Taifa","CMB Flats","Olebu","Canada City","New Ayawaso","Amamole","Ayigbe Town","Zoti","Lartebiokorshie","Alogboshie","Neoplan","Best Point","Kaneshie Flats","St. Theresa","Cocoa Clinic","Kaneshie Sports Complex","Kokomlemle","Mallam Atta Market","Accra New Town","Timber Market","Asylum Down","Gye Nyame Hotel","NPP Office","Makola","Tudu","Aflao Station","UMB Bank","Liberty House","Katamanto","Swam Mill","PZ","James Town Police Station","Pig Farm","Kotobabi Police Station","Expo 67","Abavana","Kotobabi Polyclinic","Asofa","Seven Days","Atta Mills","Ofankor","Amelia","Pokuase Interchange","Agya Herbal","Ofankor Railway Bridge","Congo Junction","Burma Camp","Palm Wine Junction","Rawlings Circle","Madina Market","Madina Mosque","Maye Hot","Atomic Junction","North Legon","Ghana Hostels","Libya Quarters","Washington","Nsawam Township","Oparekrom","Adoagyiri","Ayalolo","Aboma","Greda Estates","Pentecost University","Alhaji","Sowutuom","Antieku","Baron","Amrahia","Danfa","Otinibi","Amanfro","Zenith College","Tseaddo","New England","Chain Homes","Madina Estate","Legon Hills","Nungua Estates","Adogonno","1st Junction","Telecom","Wele","Heritage Tower","Ecobank HQ","Ridge Tower","Ringway Estates","NIC","Joma Township","Ablekuma Agape","Suncity","Adenta Estates","Commando","New Legon","Mataheko","Adeiso","Coaltar","Valley View University","Oyibi","Apollonia","Pantang Hospital","Nyamekrom","Abokobi","Oxford Street","Kalamazoo","Beijing Clinic","Borkorborkor","Manhia","Afoaman","Maame Nkran","Mayera","Denu","Kuntunse","Amasaman","Fise","Toman","Okponglo","East Legon","Bawaleshie","Madina","PRESEC","UPSA","Pentecost Hospital","Social Welfare","TV Africa","SSNIT Archives","Kwashieman","Nii Boye Town","Lapaz","King of Kings","Darkuman Mosque","Darkuman Quarters","Asantewaa Hotel","Kpehe Catholic Church","Police Detective Academy","GTUC Campus","Tesano","John Teye SHS","Kwabenya Adom","Police Quarters","Capital Hill","Emmanuel Eye Clinic","Legon","Mensvic Hotel","East Cantonment","Max Mart","Butler Lines","Japan Motors","Lakeside Community 1","Lakeside Community 8","Mallam Junction","Jayee University","Menskrom","Sakaman","Mallam Market","Blue Lagoon","Dansoman SSNIT Flats","Sukura","Appiah Danquah","Zamrama Line","Adjirigannor","Islamic University","NTHC Estates","National Archives","Adabraka","Ministry of Information","Teachers Hall","Adabraka Methodist","Ashongaman Estates","Atomic Commission","Dome Pillar","Atomic Guest House","Konka","Sawmill","Independence Square","La T-Junction","La Palm Royal Beach Hotel","La Beach Hotel","La Cemetery","Fan Milk","Ablekuma Abease","North Kaneshie","New Fadama","Sabon Zongo","Okponglo Booster Station","North Dzorwulu","Accra Shopping Mall","Woolworth","Polo Court","Aviation House","Villagio","Africa Regency Hotel","Airport West Hotel","Mataheko Police Barracks","Arts Commercial Centre","Abuom","Bethel","Comet Estates","Bank of Ghana Quarters","NADMO","Ogbojo CSIR","Abofu","New Achimota Station","Dar Es Salam","Sea Lady","Manna Mission Hospital","Camp 2","Teshie Demo","Tebibiano","Nmai Djorn"],"ASHANTI":["Ejisu","Kokobra","Deduako","Asamang","Domeabra","Apromase","Kokoben","Donyina","Appiadu","Trabuom","Manso-Nkwanta","Boko","Twedie","Foase","Antoakrom","Seidi","Amankyea","Essuowin","Mpatuom","Ahwerewa","Tetrem","Odahu","Atwire","Abore","Moseaso","Kronom Cement","Heman","Amoaman","Adankwame","Kokote","Abira","Namong","Takyeman","Denkyembouso","Ohwumasi","Hill Top","Asouyeboa","Tanoso","Topreso","Moshie Zongo","Airport","Pankrono","Ahwia","Kuma","Krapa","Bampenase","Adubenso","Adubensokese","Swedru","Adubensobea","Aboabogya","Bomfa","Sewaba","Asabi","Asokore Mampong","Paakoso","Affordable Housing","Akokoamon","Kyerekrom","Ekyem","Parkoso","Aprede","BRRI","CRI","Akorem","Adukrom","Dagomba Line","Oforikrom","STC","Onwe","Ejisu Sec Tech","Amakom","Stadium","Krofrom","Ampabame","Afrancho","Kantenkyiren","Kyerensa","Bedase","Adwampong","Ahwiaa Town","Cultural Centre","Komfo Anokye SHS","GBC","T.I. AMASS","Kontonpo","Asori Nkwanta","Limex","Konongo","Juaso","Freetown","Yawkwei","Nkwanta","Obogu","Dubi","Saabo","Subinso","Kumeaboe","Takwae","Koikrom","Asankare","Bompata","Adanse","Breku","Asuobua","Dampong","Asokwa Oldtown","Asokwa Pentecost","Juaben","Yabi","Aburaso","Kromoase","Maase","Adwenase","Taabom","Essen","Chichibon","Gyekye","Dida","Wawase","Antobuase","New Nsuta","Zongo","Amangoase","Kulamu","Gausu","Koffiekrom","Nyameso","Bediem","Anyinam","Suhyenso","Akaako","Agyeikrom","Mile 9","Mile 14","Edwinase","Kwame Tanokrom","Oseikrom","Fenaso Nkwanta","Abubuasin","Menakrom","Nerebehi","Nfensi","Asafo","Asafo Market","Brigina","Tarkwa Maakro","Mpatasie","Anomangye","Magazine","Old Suame","New Suame","Abrepo","Bohyen","Sawaba","Denase","Abenkyim","Anwiankwanta","Awhia","Dominase","Bhenase","Ntinanko","Poano","Apaaso","Adjemesu","Ofoase Kokoben","Abono","Obo","Aprabon","Mamponteng","Agona","Nsuta","Kumawu","Mampong","Effiduase","Ankaase","Breman","Kronum","Sepaase","Edwanfo","Afari","Nkawie","Abuakaw-Makro","Asikuma Town","Mfuom","Babianiha"],"TEMA":["Leisure Hotel","Nungua Zongo","Kpeshie Police Headquarters","Coco Beach","Father's Hotel","Mobole","Afienya Taxi Station","Toll Booth","Emmanuel Estates","Hot Oven","Ablekuma","China Mall","Kaketo","Okro Market","Valco Flats","Leonardo","Adjetey Ansah","Manheam SHS","Naval Base","Abonko","Tema New Town Lorry Station","Comm 19","Ghana Steel","Kpone Dump Site","Kpone Kokompe","Ososhie","Magna Terris","Adom Estates","BOST","Frenchman","Supreme Gas","Ashaiman Timber Market","Middle East","Home and Away","Methodist Junction","ICGC","Crystal Medical Center","Comm 7","Jericho","Roman Down","Under Bridge Market","State School for the Deaf","Kanawu","Adjei Kodjo Township","Comm 17","Bake Shop","Resolve Hospital","Baatsonaa Government School","Marina Mall","Baatsonaa Total","Japan City","Adjei Kodjo","Emef Estates","Lashibi","Celebrity Golf Club","Sakumono Village","Sakumono Estates","Buena Vista Homes","Fridays","Njoy Hotel","Comm 25","Bediako","Golf City Police Station","Kent Estates","HFC Estates","John Grey Estates","Kakalika Plaza","Standard Chartered Bank","Kpogas","New Ningo","Old Ningo","Nungua Secondary School","Channel 5","Nungua Town Park","Kpoo Keke","Best Premier Hotel","Fuel Trade","Chase Petroleum","WAPCo","Bankuman","Naval Quarters","Tema International School","Don Bosco","Bethlehem","Sebrepor","White Estates","Goshen","Gbetsile"],"WESTERN":["Diabene","Nkroful","Kansawurodu","Ntankoful","Mt. Zion","Race Course","Whindo","Inchaban","Nyankrom","Shama Junction","Shama","Aboadze","Abuesi","Dixcove","Busua","Cape 3 Point","Mpanyiasa","Prestea Township","Mankesim","Enyinam","Pewodie","Nyinawusu","Diaso","Juabo","New Obuasi","Ntom","Agona Port","Ankwaso","Benchema"],"EASTERN":["Kowf Hotel","Spredigle","Anlo Town","Charlie Junction","Srodai","Central Market","Amanase","Kyekyewere","Budu","Teacher Mantey","Koans Estate","Kusi","Kade","Okumaning","Obo","Obomeng","Osabene Township","Yaa Botwe","Kentenkeren","Capital View Hotel","Eastern Premier Hotel","Adweso SSNIT Flat","KTU","Universal School","Okorase","Domeabra","Bunso","Nsutam","Abompe","Osino","Saaman","Anyinam","Kwabeng","Mouso","Akim Tafo Township","CRIG","Tontro","Perchie","Maase","Abesim","Wisiwisi","Noyem","Gyamaase","Pra River","Akoase","Larbikrom","Abirem","Tafo Sabon Zongo","Nobi","Samresi","Nsutapon","Klo Agogo","Boti Falls","Huhunya","Asesewa","Akateng","Nkurakan","Valley Safari"],"CENTRAL":["Ajumako Township","Enyan Denkyira","Kwamakese","Anomabo Township","Briwa","Obokor","Essueshia","Eyisam","Nakwa","Ataabadze","Twaa","Atwaa","Saltpond Township","Ankaful","Saltpond Hospital","Anokyi","Abonko","Mfanstiman Girls","Mankessim Township","Kwasi Ansa","Kormaste","Anomabo","Amoada","Adambo","Jukwa","Effutu","Heman","Bremang","Abrafo","Assin Fosu Township","Abura Dunkwa","Yomoransa","Asebu","Edumfa","Assin North","Assin South","Manso"]},
-  B: {"VOLTA":["Oklahoma","Lolobi Towns","Likpe Towns","Ayoma Towns","Baglo Lakanti","Akpafu Adorko","Agorpenu","Sogakope Township","Dabala Town","Adutor","Tsavanya","Tordzinu","Klotekpo","Gafatsikope","Torve","Logokukope","Akatsi Township","Dzrakate","Atidzive","Abor","Tadzewu","Avalavi","Fodome Towns","Liati Towns","Gbledi Towns","Wli Towns","Akaa Towns","Alavanyo Towns","Nkonya Towns","Hedzranawo","Adina","Kedzi","Agavedzi","Keta","Kadjebi","Asato","Mount Sinai","Jasikan","Nkwanta","Ho Township","UHAS Main Campus","Adaklu Kodzobi","Sokode Lokoe","Akrofu","Abutia","Rainbow","Aflao Lowcost","Agbokope","Beach","Avoeme","Awakome","Denu Lowcost","Tsito Township"],"ACCRA":["Abossey Okai","Zongo Junction","Kaneshie Orange Market","Lartebiokorshie","IBE","Mamprobi","Akoshie Junction","Kamara","SDA Junction","La Nkwantana","Power Line","Special Ice","Ayi Mensah","Ghana Flag","Special Drink","Oyarifa","Obeyeyie","Akramaman","Yahoman","Ayikai Doblo","Pobiman","Treba","Greda Estates","Tsui Bleoo","Agblezaa","Tebibiano","Akuaba Estates","Brekusu","Agyemanti","Comet Estates","Atinka Media","Aburi Sec Tech","Ahwerease New Site","Lord Care Cold Store","Alioma","Kingsway","Japan Embassy","Korea Embassy","Miklin Apartments","Food Research","Kukuhill","Morning Star","Trinity Seminary","Mempeasem","UG Business School","Atraco","UPSA Hostel","Nsawam Prisons","Doblo","Hebron","Agya Appiah","Blue Skies","Ashale Botwe Old Town","Little Roses","Nanakrom","Pentecost Down","Okpoi Gonno","Marvel House","Knight Court","Embassy Hotel","Dubois Center","American Embassy","Arabian Embassy","France Embassy","Ghana International School","Mamobi","Accra Girls","Kotobabi","Oyarifa Township","Ashieye","Aseidu Nketia","Gravel Pit","Regimanuel Estates Spintex Rd","Odorkor","Junction","Great Garden","Kwashieman","Santamaria","Kwashiebu","Race Course","Tabora","Alhaji","Bantsiasi","Goil HQ","Central Police Station MTTD","AirtelTigo HQ","Musuku","Oscar","Point 1","Balloon Gate","Stages","Haatso Yam Market","Legon Botanical Gardens","Peduase Lodge","Kitase","Ahwerease","Aburi SHS","Ayim","Ashongman Village","Pure Water","Ashongman City","Gbawe Bulemi","Gonse","Djaman","Oblogo","Weija Dam Site","Ghana Standard Authority","Obama Hotel","GS Plaza","Gecko","Golf House","National Identification Authority","CSIR","Terry Cot","Century Industries","Kokompe","Darkuman","Agbogbloshie","Pure Fire","Christian Village","Golf Park","Sober","Kisseiman","Westland","Haatso Trotro Station","Association International School","Airport Residential Area","Newmont Ghana","Gold House","WAEC","Cedar Court","Capital Place","Tang Palace Hotel","Bostal","Roman Ridge Shopping Arcade","DevTraco Estates","Ogbojo","Local Government","ARS","Flamingo","Radio Gold","Dome","Ikam","Kumbaya Hotel","Francisca Tower","Multi TV","Kokomlemle","GWC La","Akrowa House","La-T Junction","Labone","La Wireless Station","Alisa Hotel","Nmai Djorn","School Junction","Akweteman","Bambolino","Mama's Inn","Dansoman Keep Fit","SSNIT Flats","King Solomon","Movenpick","Accra City Hotel","Supreme Court","Fast Track Court","Opera Square","Ghana Post","Oceanic Resort","New Bortianor","Osiadan","Dunkona","Red Top","New Aplaku","Kings University","Burger Town","Abokobi","Teiman Township","Top Herbal","Bohye","Wisconsin University","Busy Internet","GRA","Niagara","Providence Tower","Iran Clinic","Nkrumah Circle","GCB Tower","Ayalolo","Diamond House","Registrar General","Ghana News Agency","Fulani","Tuba","Langba","Kokrobitey","Achimota Market","Naa Densua","Achimota Halt Tower","Banana Inn","Osofo Dadzie","Mascot","Mamponsee","Village Gate","Pantang Junction","Focos Hospital","Shalom Estates","Kottam Estates","Swiss Embassy","Diamond Ridge","AU Estates","North Ridge Hotel","Accra High School","NHIS HQ","MTN HQ","Merchant Bank","Alisa Village","Latter Days Saints","Nyamekye","MAB Hospital","Kwashie-Bu","Anyaa","Nsumfa","Sowutuom","Seminary","Omanjor","VRA Flats","Mambo Spot","Agape Junction","Sahara","Control Market","Kit-Kat","Dansoman","Mars Junction","Sukura Market","Epo","Trust Hospital","Osu Entertainment","Koala","Coffee Shop","Labone GNTC","Cantonment","BOG Hospital","NAFTI","Kwabina Adjei Homes","TseAddo"],"ASHANTI":["Moinssi Valley","Akrofuom","Jimiso","Jimiso Kakraba","Bekwai Township","Korkyerekrom","Kwabetusu","Anita Hotel","Besease","Breman Nkwantwima","Kronum","Sasa","Bouho","Brofoyedru","Ampabame","Bodwesango","Petransa","Bomso","Akyena","Atrama","Magazine","Tafo New Road","Tafo Nhyiaeso","Tafo","Adagya","Esereso","Jachie","Pramso","Abramkese","Ghana Water Office Suame","A-Lang","Odeneho Kwadaso","Agric Amanfrom","Santasi Apire","Old Suame","New Suame","Wawase","Kwabrafoso","Tutuka","Aboagyekrom","Boete","Lowcost","Brahabebume","Atoplans","Bossman","Abuakaw-Makro","Asonomaso","Manhyia","Koforidua","Tabre","Akwabuah","Ntensere","Mfensi","Asakraka","Deeper Life Kwamang","Sanfo Aduam","Adumasa","Kokotro","Essiase","Wood Village","Bost","Sokoban","Asaago","Atasomanso","Adiebeba","Ahodwo","Melcom","Fankyenebra","Akrowa","Kodie","Apagya","Akrofrom","Patasi","Aduman","Aduamoah","Denase","Akom","Pampatia","Sepaase","Edwanfo","Afari","Nkawie","Hiawu-Besease","Mpasatia","Mankranso","Kunso","Boatenkrom","Arokrom","Bonkwaso","Pampaso","Worakese","Kwaso","Essienimpong","Kotwi","Nkransa","Habitat","Bekwame","Kyekyewere","Kokoben","Kokoben Ebenazer","Atimatim Abrafi","Fawoade","Asenua","Meduma","Meduma Abass","Kontomire","Asempenaye","Akaporiso","Pomposo","Asonkore","Abusco","Santasi","Fankyrenbra","Kaasi","Ahinsan","Coca Cola","Ash Foam","Appiah Menkah","Abattoir","Bomplex","Opoku Transport","Atia","Kentinkrono","Maxima Junction","Ayegya Est","Ayegya Zongo","Christian Village","Amangoase","Nsenie","China Estate","Bonfa","Pepedan","Esumaja","Sebedie","Kokofu","Asankari","Wamasi","Asanso","Amoafo","Abodom","Asokore","Diamond Hotel","CPC","Dichemso","Agona","Kumawu","Effiduase","Mampong","Adoato","Abrepokese","Asubonteng","Ohwum","Amanfrom","Adomanu","Bokankye","Kokosu","Ahwiaa Newsite","Ahwiaa Overseas","Ahwiaa Adabraka","Buabenso","Buaben","Bekwai Bungalow","Nampansa","Amansie","Asiebu","Anwiam","Abirem","Abirem Zongo","Antoa","Adesina","Sisikro","Bodoma","Amponya","Ataase","Afoako","Homase","Bekrose","Adubrem","Penipa","Asikuma","Esereso"],"TEMA":["TIS Basic School","Comm 22","Michell Camp","Movelle","European Market","Comm 17","Fafali","HFC Estates","Cambodia","Santor","Agbeshie Laryea","Nelplast","Kubekro","Level 400","Katamanso","Gbetsile","Official Town","Christian Village","Clementina","Ashaiman Circuit Courts","Temascho","Church of Brotherhood","Charyass","Railway Quarters","Comm 5","Aponkye Clinic","Irrigation","Central University","Ghanaman Soccer Academy","Noble Estates","Ghana Water Prampram","Tsopoli","Dawa","Sege","Kaseh","Big Ada","Ada Foah","Totope","Treasure Island","Aqua Safari","Lele Salt","Palace Mall","Lovely","Kpone Barrier","Motorway Total","Alisa Hotel","VEHOCS","Abbattoir","Motorway Axle Station","SRG Klagon","NutriFoods","Toyota Ghana Ltd","Comm 8","Akrade","Senchi","Atimpoku","Akwamufie","Juapong","Volo","Fintey","Frankadua","Nudu","African Fish","Anum","Boso","Dodi Asantekrom","Full Gospel Church Comm 12","Youth With a Mission","FOS Aluminium","Salvation Army Comm 12","Akuaba Estates","Jehova Witness Assembly Hall","Coastal Estates","Adotey","Prampram Junction","City Escape","Prampram Township","Kpoi Ete","SSNIT Flats Comm 5","Valco Residence","SOS Village","Comm 10","Rama Down","Able Academy School","Mavis Industries","Comm 25 Mall","Polystar","Maranatha Church","LEKMA Polyclinic","Adogonno","Glow Lamp","Frimpamaa Estates","Abrantie","Dan Adams","First Choice","Basket"],"WESTERN":["Amreaboi","Mumuni","Atobrakrom","Yerase","Akoon","New Atuabo","Cyanide","Kwabedu","Cape Town","Budo City","Afere","Bodi","Aheinbenso","Akontombra","Essae","Wiawso","Bawdie","Ankosia","Adamanso","Asikuma","Wassa Akropong","Saamaang","Afransie","Wassa Saa","Wassa Japa","Nanankor","Nkonya","Bogoso Township","Kokoase Adjeikrom","Oppon Valley","Awudua","Samahu","Himan Township","Brumasi","Duamasi","Kwemeniapa","Ghana Gas","Afuke","Dadieso","Bonsu Nkwanta"],"EASTERN":["Asamankese Township","Yayo","Asamankese Town","Pinora Industries","Bunso Lindador","Forest Gate","Adukrom","Asikam","Agyepongmaa","Kibi","Nkronso","Potroase","Pano","Akooko","Bepong","Asakraka","Kwahu Tafo","Ankoma","Kotoso","Miaso","Krofofrom","Teacher Atta","Akroso","Agona Ninta","Asouso","Akim Koforidua","Bantama","Nkawkaw Novotex","Amanfrom","Saafi","Awenade","Apradang","Fodua","Besease","Dadieso","Kwahu Praso","Bunso Ayigbe Town","Ettukrom","Osiem","Bosuso","Hemang","Koradaso","Begoro","Obourho","Ofoase","Ayerebi","Etwereso","Gyadam","Nkwateng","Adweso","Abogiri","Two Streams","Trom","Medical Village","Ghalloway","Agavenya","Nkawkaw Trador","Oframase","Mpraeso Amanfrom","Kwahu Nsabah","Asuboni Rails","Akim Sekyere","Enyiresi","Roman","Jamaica","Zongo","Kofigya","Abenabo","Akorabo","Akote","Jato","Amanhyia"],"CENTRAL":["ECG Main Office","Ashanti Road","Brofoyedur","Idan Nstin","Ekon","Reg Office","Chapel Square","Bakano","Kotokruba Market","Jubilee Sch","St Augustine","Ola Estate","UCC","Industrial Estate","Radio Central","Adisadel Estate","Industrial Area","West End","Mfanstipim Flat","4th Ridge","Pedu Junction","Pedu Township","Kakumdo","Esuakyir","1st Ridge","2nd Ridge","3rd Ridge","Nkanfoa","Central Regional Hospital","Eguase","Moree","Adukrom","Akroma","Ayensodo","Kissi","Komenda","Agona","Brase","Sekyere Hemang","Bronyibima","Sanka","Attabadze Town","Attabadze Village","Elmina Town","Bamtama","Akwanda","Brenu Akyem","Peshie","Elmina Shell","Iture","African Pot","Amamuma","Duakro","Ola Township","Elmina Zongo","SSNIT Flat","Atonkwan","Amoada","Nkontrodo","Amisano","Abie","Ankaful Mental","Ankaful Prisons","Manso","Kushia","Assin North","Assin South","Dompim","Awuroso","Assin Fosu Town"]},
-  C: {"VOLTA":["Tokor","SPACO","Kopeyia","Dzodze","Ave Towns","Nogokpo","Agbozume","Dzaglame","Klikor","Weta Towns","Taskcorner","Ehi Towns","Afiadenyigba","Nakyikope","Akatsi Towns","Ho Township","Wumenu","Agotime Towns","Kpetoe","Agorhokpo","Agorhome","Sarakope","Batume Junction","Akpokope","Ziope Towns","Agonu Towns","Honugo","Keklebesi","Bedzame","Hohoe Township","Waterworks","Oklahoma","Sovie","Anfoega Towns","Aveme Towns","Vakpo","Wusuta Towns","Tsrukpe Towns","Comboni","Agordome","Kepnu","Agorta","Angloga","Keta","Worawora","Kabusu","Apesukobi","Ayeremu","Katanga","Asukokoo","Dormabin","Dambai","Kpando Todzi","Kpando Togorme","Torkor","Kpeve Township","Kpalime Duga","South Dayi","New Kaira","Dzemeni","Peki"],"ACCRA":["Asylum Down","Geological Survey","West Ridge","Best Cuisine","Haatso Ecomog","K Boat","Zita Lane","Paradise Lodge","Mallam Abease","McCarthy Hill","Gbawe Zero","Top Base","Salaga Market","James Town","Cadbury","La Beach Road","Family Health Hospital","Teshie Maami","Speedy","Flower Pot","Palace Mall","Oak Plaza Hotel","Bubiashie","Ayigbe Town","Morning Star School","Labone","Achimota School","Achimota Police Station","Toman","Pokuase Township","Pobiman","Ecoblock","SEL Filling Station","Fountain Gate","Franko Estates","Chorkor","Agege Lorry Park","Chemuanaa","Sempe","Dan Wright","Korle Gonno","St Mary SHS","Mile 7","Maple Leaf","New Achimota","Kinsby","Nii Boi Town","Chantan","Shiabu","Dansoman Beach Road","Gbegbeyisee","Tesano","Alajo","Charleston Hotel","Santana Market","Beyeeman","Princess Coldstore","Honda Place","South Industrial Area","Children Hospital","Palladium","Katamanto Market","Ebony","Kotobabi Down","Abavana Down","Ayidiki","Dorwulu","Abelemkpe","Pere Dome","Marwako","Special School","Nsawam Market","Nsawam Hospital","Nsumia","Mikado","Sakyikrom","Anoff","Piabor","Prisons","Police Hospital","Forestry Commission","Teiman Township","Bawaleshie","Madina Social Welfare","Vineyard","3rd Gate","Aviation","Peace Be","Ashale Botwe","Frafraha","Rowi Junction","Ampomaa Estates","Dobro","Sapeiman","Amasaman","Opah","Africola","Hebron","Satelite","Fair Haven","Community 5","Sraha","St Peters","Nsakina New Town","Peace Village","Ga-Odumase","Nyamekye","Fadama","KPOGAS","La Presby","Ofankor","Tantra Hill","SSNIT Flat Tantra Hill","St John","KFC","SDA Southern HQ","BOG Flats Mataheko","Awoshie Baah Yard","New Gbawe","Odorgonnor","Weija Junction","Tetegu","Dodowa Hospital","Ayikuma","Doryimu","Kordiabe","Agormeda","Gegedekum","Jarpanya","Apese","SCC","Weja","Gicel","Mandela","GBC Quarters","Mile 11","Broadcasting Last Stop","Bortianor","American Flag","Kasapa","Bayere Junction","Reservoir","Petroleum Commission","Paloma","Nima","Frankies","Nima Gutter","Nima Roundabout","Nima Market","Mogya Biedon","Glefe","Wiaborman","Ebenezer SHS","Atomic Hotel","Dansoman Last Stop","Village Gate","Mamponsee","Awoshie Water Works","Sakaman Junction","Mallam Market","Gbawe","Janus Ltd","New TseAddo","New England","Camp 2 Taxi Rank","Boshye","Academic City University","Ajirigannor","Coffee Shop","Abeka Market","New Fadama","Adom Clinic","La Wireless","Labone","Teiman","TseAddo","Rosa Rosa","Kotoku","Medie","Blue Skies","East Legon Hills","Fair Heaven","Soja Line","Lake Side Comm 8","Katamanso","Paradise Estate","Regimanuel","Adom Gate","Ayi Mensah","Danfa","Oyarifa","A Line","Rehoboth Estate","Wisdom Square","Comet Estate","Firestone","Madina Zongo Junction","Massalatsi","RedCo Flats","Jehovah Witness"],"ASHANTI":["Abakomade","Abuakwa","Tanoso","Paramount","Formulation","St Elizabeth","Adwumam","Adwumam Newsite","Fawoade","Adagya","Esereso","Zoom Lion Factory","Sesease","KMA Residency","Nhyayeso","Asawase Market","Zaabo Zongo","Akawatia-Line","Afia Kobi Market","Cocoa Clinic","Adum","Railways Co","Bompata","Fanti Newtown","K Poly","Asafo","Alabar","Ashtown","KO","Mbrom","Yegola Hotel","KTI","Roman Hill","Town Hall","SIC","Zongo Police Station","Central Market","Dakwadwum","TUC","Fankyenebra","Teacher Nkwanta","Kenkaese","Dwansa","Agogo","Low Cost","Nyaboo","Atonsu","Petransa","Kokoase Mines","Bimma","Obenemase","Asonkore","Kwabemnakwa","Mampamhwe","Nyamesomye","Domeabra","Tewobebi","Nyamebekyere","Nyakumasu","Denase","Asokwa","Breman UGC","Atimatim","Atimatim Chairman","Atimatim Bronkrom","Atimatim Newsite","Pankrono","Pankrono Abed","Adukrom","Dagomba Line","Oforikrom","STC","Maxima","Bomso","Susanso","Susanekyre","Awunaga","Bantama","Race Course","Kajetei","Cultural Centre","Junction","Aboabo","Asawasi","Hwiremoase","Kyiraburoso","Bronikrom","New Edubiase","Fumso","Boadi","Emina","Ayeduase","Apemso","Deduako","Anhiwiaso","Praso","Ataase Nkwanta","Apagya","Nsuta","Boko","Atobiase","Nkranfo Nkwanta","Atwereboma","Ayanfuri Town","Dominase","Nkotimso","Breku","Pipiiso","Atetem","Gyinyase","Kotei","Ahinsan","Kwadaso","Kwadaso Nsoum","Asuoyeboa","Tanoso","Pokukrom","Apatrapa","Bodwesango","Piase","Mim","New Brodakwaw","Beposo","Kwadaso Estate","Patase","Police Depot","Santase Roundabout","Edwinase","Nimo","Kwadaso Ohwumase","Bomfa","Peminase","Esaase","Wabiri","Asiwa","Kokoben","Adeito","Anyanso","Ofoase","Boankra Port","Hwereso","Kubease","Koforidua","Nobewam","Konkori","Kwanwoma","Asaago","Pakyi No 1","Pakyi No 2","CAC University","Nyameani","Domeabra","Kyekyebiase","Pekyerekye","Akutuase","Wioso","Dwereso","Hwidiem","Behwe","Kenyase","Abirem","Bosore","Nwamase","Brofoyedu","Garden City","Duase","Kronom","Sepe","Buokrom","Airport Roundabout","Pankrono Est","Agya Appiah","Buokrom Est","Abouhia","Breman West","KNUST","Banivillas Hostel","Ghana Hostel","Nwamasi","Apire","Henman","Bebu","Dako","Adumasa","Brofoyedru","Mpatase","Trede","Fumesua","Kwamo","Kwamo Highways","Ejisu","Bebre","Kokobra","Emuye","Bedieso","Mensakrom","Gausu","Kunka","New Dochiwaa","Kyekyewere Barrier","Council Quarters","Kwapia","Akrokerri Training College","Old Akrofuom","Bobrase","Hemang"],"TEMA":["OLAM SHS","Comm 4","Lashibi","Klagon","Comm 19 Annex","EMEF Estates","ECG Flats","GNPC Flats","IMaH","Comm 3","BNI Flats","TOR Flats","Adom FM","Cocobod Flats","VRA/GRIDCo Flats","Womens Hospital","Comm 11","Nuaso","Agomanya","St Martins Hospital","Lebanon Zone 3","Zenu","Atadeka","Legacy Girls","Ghana Prisons","Asutsuare","Golden Exotics","Volivo","Shai Osudoku","Commandos Military Training Camp","Comm 25","Bulasu","Ghana Flag","Casilda Estates","Afienya Zongo","Dawhenya Township","Abbey Kope","Saglemi Housing","Pharmanova","Lakpleku","Boiko","Bundase Military Training Camp","Afariwaa Junction","Yellow Signboard","Michell Camp Gate","Gbetsile Junction","Gbetsile Lorry Station","Soldier Line","Ashaiman New Town","Valco Flats Market","Odumse","Christian International School","Fiankonya","Mobole","Otsebreku","Apollonia","Jerusalem","Katamanso","Promised Land","Devtraco Estates","Kpone Affordable Housing","Shang Hai","Kpone Township","Spintex Junction","KFC","Texpo","Akorley Township","Akorley Booster Station","Adukrom Pumping Station","Magotsonya","Lashibi Funeral Homes","Buena Vista Homes","Posilipo","Regional Maritime University","Jomef","Vodafone","Comm 9 Market"],"WESTERN":["BU Junction","Repso Hills","Fijai","Adiembra","Kweikuma","New Site","New Amanful","Takoradi Beach Road","Dupaul","Apremdo","Whindo","Assakae","Adientem","Takoradi Police Reserve","Collins Avenue","Apowa","Kejebir","Mpohor","Adum Banso","Breman","Kwabeng","Agona","Moseasu","Dominase Nkwanta","Nkroful","Telekubokazo","Asasetre","Bamiako","Amanteng","Manso","Akontombra","Juaboso"],"EASTERN":["Oda Quarters","Akim Swedru SHS","Asikuma","Amanfopong","Duakon","Nkwatia","Abetifi","Pepease","Hweehwee","Sempoa","Abene","Ankaase","Effiduase","Asokore","GHANASS","Bohye","Zongo","Pipeline","OBOSS","Magazine","Wawaso","Suhum Township","Akwatia No 4","Anweaso","Atiankama Nkwanta","Timber Market","Achiase","Nkawkaw Township","Asoukaw","Mepom","Nyanoa","Esaaso","Nyankomase","Osenase","Kubriso","Old Estate","Paradise","Residency","PURC","Atekyem","Nyamekrom","Densu","Okorase","Tei-Nkwanta","Tinkong","Konko","Adukrom Nyensi","Adawso","Mangoase","Kwamoso","Akim Oda Post Office","Number 9","Police Barracks","Community 6","Aperade","Osorase","Achiase"],"CENTRAL":["Akosua Village","Esukyir","Ghaadze","Okyereko","Breku","Senya","Bonsuoko","Gomoah Fetteh","Akoti","Ojobi","Kontokole","Mellennuim City Estate","Adamukrom","New Castle","Menges","Sandema","Blue Kiosk","Anigye-Krom","Opeikuma","Asamoa","CP","Nyanyanu","Yoo Mart","Budunburam","Nkwantenan","Tipper Junction","Roman","Evalip","Wallantu","Gateway","Newtown","Kuwait","Galilea Market","TV3","94 Washing Bay","New Market","Opeikuma","American Town","Colomba","Congo Villa","Akweley","Otta City","Top Town","Nurses Quarters","Denchira","Domeabra","Kpormotey","Ashalaja"]}
+  A: {"VOLTA":["Adidome Township","Akyemfo","Mafi Anfoe","Mepe","Dagorme","Keta"],"ACCRA":["South Odorkor","Madina Market","Tseaddo","Legon"]},
+  B: {"VOLTA":["Oklahoma","Keta"],"ACCRA":["Abossey Okai","Keta","TseAddo"]},
+  C: {"VOLTA":["Tokor","Keta"],"ACCRA":["Asylum Down","Labone","TseAddo"]}
 };
 
-// Build flat index
 const SEARCH_INDEX = [];
 for (const [group, regions] of Object.entries(AREAS_RAW)) {
   for (const [region, areas] of Object.entries(regions)) {
@@ -537,7 +491,6 @@ for (const [group, regions] of Object.entries(AREAS_RAW)) {
   }
 }
 
-// ─── Schedule Logic ────────────────────────────────────────────────────────────
 const SLOTS = [
   { key: "00:00-06:00", label: "Night", start: 0, end: 6 },
   { key: "06:00-12:00", label: "Morning", start: 6, end: 12 },
@@ -545,40 +498,44 @@ const SLOTS = [
   { key: "18:00-00:00", label: "Evening", start: 18, end: 24 }
 ];
 
+// ─── Helper Functions ─────────────────────────────────────────────────────────
 function padZ(n) { return String(n).padStart(2, '0'); }
-
-function dateKey(d) {
-  return `${d.getFullYear()}-${padZ(d.getMonth()+1)}-${padZ(d.getDate())}`;
+function dateKey(d) { return `${d.getFullYear()}-${padZ(d.getMonth()+1)}-${padZ(d.getDate())}`; }
+function getCurrentSlotIndex(h) { return h < 6 ? 0 : h < 12 ? 1 : h < 18 ? 2 : 3; }
+function getCurrentSlotGroup(h, daySchedule) { return h < 6 ? daySchedule['00:00-06:00'] : h < 12 ? daySchedule['06:00-12:00'] : h < 18 ? daySchedule['12:00-18:00'] : daySchedule['18:00-00:00']; }
+function getNextOffTime(group, dKey) {
+  const allDates = Object.keys(DATA.schedule.timetable).sort();
+  const currentDate = new Date(dKey.replace(/-/g, '/'));
+  for (const date of allDates) {
+    const dateObj = new Date(date.replace(/-/g, '/'));
+    if (dateObj < currentDate) continue;
+    const daySchedule = DATA.schedule.timetable[date];
+    for (const [timeSlot, g] of Object.entries(daySchedule)) {
+      if (g === group) {
+        const [startStr] = timeSlot.split('-');
+        return { time: startStr, date, isSameDay: date === dKey };
+      }
+    }
+  }
+  return null;
 }
-
-function getCurrentSlotIndex(h) {
-  if (h < 6) return 0;
-  if (h < 12) return 1;
-  if (h < 18) return 2;
-  return 3;
-}
-
 function getScheduleForGroup(group, dateStr) {
   const day = DATA.schedule.timetable[dateStr];
   if (!day) return null;
-  return SLOTS.map(s => ({
-    ...s,
-    offGroup: day[s.key],
-    isOff: day[s.key] === group
-  }));
+  return SLOTS.map(s => ({ ...s, offGroup: day[s.key], isOff: day[s.key] === group }));
 }
 
 // ─── UI State ─────────────────────────────────────────────────────────────────
 let selectedArea = null;
+let userLightStatus = null;
+let hasAmbiguity = false;
 
 // ─── Theme ────────────────────────────────────────────────────────────────────
 function toggleTheme() {
   const isDumsor = document.documentElement.getAttribute('data-theme') === 'dumsor';
   document.documentElement.setAttribute('data-theme', isDumsor ? '' : 'dumsor');
   const btn = document.getElementById('themeToggle');
-  btn.innerHTML = isDumsor
-    ? '<span class="icon">🔦</span>Dumsor<br>Mode'
-    : '<span class="icon">☀️</span>Light<br>Mode';
+  btn.innerHTML = isDumsor ? '<span class="icon">🔦</span>Dumsor<br>Mode' : '<span class="icon">☀️</span>Light<br>Mode';
 }
 
 // ─── Date Display ─────────────────────────────────────────────────────────────
@@ -586,8 +543,7 @@ function updateDateDisplay() {
   const now = new Date();
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('dateDisplay').innerHTML =
-    `<span>${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}</span> · ${padZ(now.getHours())}:${padZ(now.getMinutes())}`;
+  document.getElementById('dateDisplay').innerHTML = `<span>${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}</span> · ${padZ(now.getHours())}:${padZ(now.getMinutes())}`;
 }
 
 // ─── Search ───────────────────────────────────────────────────────────────────
@@ -604,14 +560,100 @@ function renderResults(results, query) {
     list.classList.add('visible');
     return;
   }
-  list.innerHTML = results.map((r, i) =>
-    `<div class="result-item" onclick="selectArea(${i})">
-      <div class="result-name">${r.name}</div>
-      <div class="result-meta">Group ${r.group} · ${r.region}</div>
-    </div>`
-  ).join('');
+
+  const byName = {};
+  results.forEach((r, i) => {
+    if (!byName[r.name]) byName[r.name] = [];
+    byName[r.name].push(i);
+  });
+
+  hasAmbiguity = Object.values(byName).some(indices => indices.length > 1);
+
+  let html = '';
+  if (hasAmbiguity) {
+    const now = new Date();
+    const dKey = dateKey(now);
+    const isDataAvailable = DATA.schedule.timetable[dKey];
+    
+    html += `<div class="ambiguity-notice">
+      <div class="ambiguity-content">
+        💡 Looks like your suburb is split across different power lines. Check the group and region below to find your specific area.
+      </div>
+      <div class="ambiguity-buttons">
+        <button class="status-button ${userLightStatus === 'on' ? 'active' : ''}" onclick="setLightStatus('on')">💡 Light ON</button>
+        <button class="status-button ${userLightStatus === 'off' ? 'active' : ''}" onclick="setLightStatus('off')">⚡ Light OFF</button>
+      </div>`;
+    
+    if (userLightStatus && isDataAvailable) {
+      const h = now.getHours();
+      const daySchedule = DATA.schedule.timetable[dKey];
+      const currentSlotGroup = getCurrentSlotGroup(h, daySchedule);
+      
+      const matchingGroups = [...new Set(results.map(r => r.group))].filter(g => {
+        return userLightStatus === 'on' ? (currentSlotGroup !== g) : (currentSlotGroup === g);
+      });
+      
+      if (matchingGroups.length > 0) {
+        const nextOffInfo = matchingGroups.map(g => {
+          const offTime = getNextOffTime(g, dKey);
+          if (!offTime) return `Group ${g}`;
+          const dateStr = offTime.isSameDay ? 'today' : 'tomorrow';
+          return `Group ${g} at ${offTime.time} ${dateStr}`;
+        }).join(', ');
+        
+        html += `<div class="hint-message visible">
+          <strong>Based on your light being ${userLightStatus.toUpperCase()}</strong>, you're likely in ${matchingGroups.map(g => 'Group ' + g).join(' or ')}. Next scheduled light OFF: ${nextOffInfo}.
+        </div>`;
+      }
+    } else if (userLightStatus && !isDataAvailable) {
+      const lastDataDate = Object.keys(DATA.schedule.timetable).sort().reverse()[0];
+      html += `<div class="hint-message visible">
+        Schedule data not available beyond ${lastDataDate}. Check manually or try another area name.
+      </div>`;
+    }
+    
+    html += `</div>`;
+  }
+
+  let cardsToShow = results;
+  if (hasAmbiguity && userLightStatus) {
+    const now = new Date();
+    const dKey = dateKey(now);
+    const daySchedule = DATA.schedule.timetable[dKey];
+    
+    if (daySchedule) {
+      const h = now.getHours();
+      const currentSlotGroup = getCurrentSlotGroup(h, daySchedule);
+      
+      cardsToShow = results.filter(r => {
+        return userLightStatus === 'on' ? (currentSlotGroup !== r.group) : (currentSlotGroup === r.group);
+      });
+    }
+  }
+
+  html += cardsToShow.map((r) => {
+    const origIdx = results.findIndex(result => result.name === r.name && result.group === r.group);
+    return `<div class="area-card" onclick="selectArea(${origIdx})">
+      <div class="area-card-main">
+        <span class="area-card-name">${r.name}</span>
+        <span class="area-card-group">Group ${r.group}</span>
+      </div>
+      <div class="area-card-region"><strong>${r.region}</strong></div>
+    </div>`;
+  }).join('');
+
+  list.innerHTML = html;
   list._results = results;
+  list._hasAmbiguity = hasAmbiguity;
   list.classList.add('visible');
+}
+
+function setLightStatus(status) {
+  userLightStatus = userLightStatus === status ? null : status;
+  const list = document.getElementById('resultsList');
+  if (list._results) {
+    renderResults(list._results, document.getElementById('searchInput').value);
+  }
 }
 
 function selectArea(i) {
@@ -619,7 +661,13 @@ function selectArea(i) {
   const area = list._results[i];
   selectedArea = area;
   document.getElementById('searchInput').value = area.name;
-  list.classList.remove('visible');
+  
+  // FIX #2: Keep search box visible if ambiguous until user selects their group
+  // Only hide if single match or if they selected from non-ambiguous results
+  if (!hasAmbiguity) {
+    list.classList.remove('visible');
+  }
+  
   showStatus(area);
 }
 
@@ -631,7 +679,6 @@ function showStatus(area) {
   const slots = getScheduleForGroup(area.group, dKey);
 
   document.getElementById('emptyState').style.display = 'none';
-
   const card = document.getElementById('statusCard');
   card.classList.add('visible');
   document.getElementById('areaName').textContent = area.name;
@@ -641,7 +688,6 @@ function showStatus(area) {
   const currentSlot = slots ? slots[currentSlotIdx] : null;
   const isCurrentlyOff = currentSlot ? currentSlot.isOff : false;
 
-  // Status indicator
   const indicator = document.getElementById('statusIndicator');
   const statusMain = document.getElementById('statusMain');
   const statusUntil = document.getElementById('statusUntil');
@@ -664,10 +710,8 @@ function showStatus(area) {
     }
   }
 
-  // Render slots
   if (!slots) {
-    document.getElementById('slotsContainer').innerHTML =
-      `<div class="no-results">No schedule data for today.</div>`;
+    document.getElementById('slotsContainer').innerHTML = `<div class="no-results">No schedule data for today.</div>`;
     return;
   }
 
@@ -700,7 +744,8 @@ searchInput.addEventListener('input', e => {
 });
 
 document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap')) {
+  // FIX #2: Don't auto-close if ambiguous (user needs to read hint and select button)
+  if (!e.target.closest('.search-wrap') && !hasAmbiguity) {
     document.getElementById('resultsList').classList.remove('visible');
   }
 });
