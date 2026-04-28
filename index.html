@@ -367,18 +367,76 @@
     max-width: 600px;
     margin: 32px auto 0;
     padding: 20px;
-    border-top: 1px solid var(--border);
     font-family: var(--mono);
     font-size: 10px;
     color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
   }
 
   footer a { color: var(--accent); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .share-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 0;
+    border-bottom: none;
+  }
+
+  .share-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: transparent;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    width: 100%;
+  }
+
+  .share-button:hover {
+    background: var(--accent);
+    color: var(--surface);
+  }
+
+  .share-button-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .share-button-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  [data-theme="dumsor"] .share-button {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  [data-theme="dumsor"] .share-button:hover {
+    background: var(--accent);
+    color: var(--slot-bg);
+  }
+
+  @media (min-width: 601px) {
+    .share-buttons {
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .share-button {
+      flex: 1;
+    }
+  }
 
   .date-display { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 20px; }
   .date-display span { color: var(--text); font-weight: 700; }
@@ -445,7 +503,7 @@
   </div>
 
   <div class="last-updated">
-    <strong>Last updated:</strong> April 28, 2026 — Source: ECG 800MW Global Load Management Timetable (Apr 25 – May 1, 2026)
+    <strong>Last updated:</strong> April 29, 2026 — Source: ECG 800MW Global Load Management Timetable (Apr 25 – May 1, 2026)
   </div>
 
   <div class="disclaimer">
@@ -455,8 +513,26 @@
 </div>
 
 <footer>
-  <span>© 2026 — Not affiliated with ECG</span>
-  <a href="mailto:?subject=ECG%20Tracker%20Bug%20Report">🐛 Report a bug</a>
+  <div style="max-width: 600px; margin: 0 auto; width: 100%;">
+    <div class="share-buttons" style="border: none; padding: 16px 0; margin: 0;">
+      <button class="share-button" onclick="shareViaWhatsApp()">
+        <span class="share-button-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a8.06 8.06 0 00-8.062 8.062c0 1.409.369 2.794 1.069 4.034L3.11 21.9l4.25-1.111a8.007 8.007 0 003.847.98h.005c4.454 0 8.063-3.609 8.063-8.062 0-2.15-.857-4.17-2.413-5.645-1.556-1.475-3.626-2.287-5.752-2.287m6.303 14.324c-1.428.861-3.087 1.31-4.789 1.31-.97 0-1.924-.167-2.833-.5l-3.126.82.835-3.05A8.06 8.06 0 013.05 12c0-4.454 3.609-8.063 8.063-8.063 2.15 0 4.17.857 5.645 2.413 1.475 1.556 2.287 3.626 2.287 5.752 0 2.02-.646 3.964-1.829 5.546"/>
+          </svg>
+        </span>
+        Share on WhatsApp
+      </button>
+      <button class="share-button" onclick="shareViaX()">
+        <span class="share-button-icon">𝕏</span>
+        Share on X
+      </button>
+    </div>
+    <div style="padding: 16px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+      <span>© 2026 — Not affiliated with ECG</span>
+      <a href="mailto:?subject=ECG%20Tracker%20Bug%20Report" style="color: var(--accent); text-decoration: none;">🐛 Report a bug</a>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -749,6 +825,19 @@ document.addEventListener('click', e => {
     document.getElementById('resultsList').classList.remove('visible');
   }
 });
+
+// ─── Share Functions ──────────────────────────────────────────────────────────
+function shareViaWhatsApp() {
+  const whatsappText = "Hey! I found this super simple site to track the ECG schedule. You just search your area and it shows you when the light-off is scheduled.\nCheck your area while you still have light! https://ecg-tracker.vercel.app";
+  const encoded = encodeURIComponent(whatsappText);
+  window.open(`https://wa.me/?text=${encoded}`, '_blank');
+}
+
+function shareViaX() {
+  const xText = "Stop scrolling through the tiny text PDFs. There's a simpler way to track ECG outages.\n✅ Search by your area\n✅ 'Dumsor Mode'\n✅ Favourite your most searched areas\nNot an official app, but it stays up to date with the official announcements⚡️\nhttps://ecg-tracker.vercel.app";
+  const encoded = encodeURIComponent(xText);
+  window.open(`https://twitter.com/intent/tweet?text=${encoded}`, '_blank');
+}
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 updateDateDisplay();
