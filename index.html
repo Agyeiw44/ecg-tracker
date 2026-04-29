@@ -8,90 +8,224 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f5f2eb;
+    /* Light Mode Colors - Brand Update */
+    --bg: #F4F3F1;
     --surface: #ffffff;
     --border: #e0d8cc;
     --text: #1a1208;
     --text-muted: #6b5e4a;
-    --accent: #c8500a;
-    --accent-light: #f5e8df;
+    --accent: #CE1126;
+    --accent-light: rgba(206, 17, 38, 0.16);
     --on-green: #1a6b2a;
     --on-green-bg: #d4edda;
     --off-red: #8b1a1a;
     --off-red-bg: #f8d7da;
     --slot-bg: #f0ebe2;
+    /* Typography */
     --mono: 'Space Mono', monospace;
     --sans: 'Syne', sans-serif;
   }
 
   [data-theme="dumsor"] {
-    --bg: #000000;
-    --surface: #0d0d0d;
-    --border: #2a2010;
-    --text: #f0d080;
-    --text-muted: #8a7040;
-    --accent: #e8a030;
-    --accent-light: #1a1200;
-    --on-green: #40c060;
-    --on-green-bg: #001a08;
-    --off-red: #e06050;
-    --off-red-bg: #1a0500;
-    --slot-bg: #0a0800;
+    /* Dumsor Palette - Page 6 of Toolkit */
+    --bg: #000000;                /* OLED True Black - zero pixel draw */
+    --surface: #0A0A0A;           /* Off-black - cards detectable */
+    --border: #333333;            /* Dark Gray - rules rise above background */
+    --text: #F4F3F1;              /* Bone - primary text */
+    --text-muted: #999999;        /* Mid Gray - secondary text */
+    --accent: #CE1126;            /* Racing Red - SAME as light mode, no amber */
+    --accent-light: rgba(206, 17, 38, 0.22);  /* Red blend for consistency */
+    --on-green: #40c060;          /* Status green (to be reviewed in Step 3) */
+    --on-green-bg: #001a08;       /* Status green background (Step 3) */
+    --off-red: #e06050;           /* Status red (to be reviewed in Step 3) */
+    --off-red-bg: #1a0500;        /* Status red background (Step 3) */
+    --slot-bg: #0A0A0A;           /* Use surface color instead of dark brown */
+  }
+
+  [data-theme="dumsor"] body {
+    background-image: none;
+  }
+
+  [data-theme="dumsor"] body::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="390" height="780" viewBox="0 0 390 780"><g stroke="%23333333" stroke-width="1" fill="none" opacity="0.12"><path d="M 0 60 L 40 60 L 60 40 L 90 40"></path><path d="M 0 100 L 70 100 L 90 80 L 130 80"></path><path d="M 60 0 L 60 20 L 80 40"></path><path d="M 390 50 L 340 50 L 320 70 L 280 70"></path><path d="M 390 110 L 360 110 L 340 90"></path><path d="M 330 0 L 330 30 L 310 50"></path><path d="M 0 380 L 30 380 L 50 360 L 80 360"></path><path d="M 0 440 L 60 440"></path><path d="M 390 360 L 350 360 L 330 380 L 300 380"></path><path d="M 390 420 L 340 420"></path><path d="M 0 680 L 50 680 L 70 700 L 110 700"></path><path d="M 0 720 L 80 720"></path><path d="M 30 780 L 30 750 L 50 730"></path><path d="M 390 660 L 320 660 L 300 680 L 260 680"></path><path d="M 390 720 L 330 720 L 310 700"></path><path d="M 350 780 L 350 740 L 330 720"></path></g><g fill="%23333333" opacity="0.12"><rect x="38" y="58" width="4" height="4"></rect><rect x="58" y="38" width="4" height="4"></rect><rect x="88" y="38" width="4" height="4"></rect><rect x="68" y="98" width="4" height="4"></rect><rect x="88" y="78" width="4" height="4"></rect><rect x="128" y="78" width="4" height="4"></rect><rect x="78" y="38" width="4" height="4"></rect><rect x="338" y="48" width="4" height="4"></rect><rect x="318" y="68" width="4" height="4"></rect><rect x="278" y="68" width="4" height="4"></rect><rect x="358" y="108" width="4" height="4"></rect><rect x="338" y="88" width="4" height="4"></rect><rect x="308" y="48" width="4" height="4"></rect><rect x="28" y="378" width="4" height="4"></rect><rect x="48" y="358" width="4" height="4"></rect><rect x="78" y="358" width="4" height="4"></rect><rect x="58" y="438" width="4" height="4"></rect><rect x="348" y="358" width="4" height="4"></rect><rect x="328" y="378" width="4" height="4"></rect><rect x="298" y="378" width="4" height="4"></rect><rect x="338" y="418" width="4" height="4"></rect><rect x="48" y="678" width="4" height="4"></rect><rect x="68" y="698" width="4" height="4"></rect><rect x="108" y="698" width="4" height="4"></rect><rect x="78" y="718" width="4" height="4"></rect><rect x="48" y="728" width="4" height="4"></rect><rect x="318" y="658" width="4" height="4"></rect><rect x="298" y="678" width="4" height="4"></rect><rect x="258" y="678" width="4" height="4"></rect><rect x="328" y="718" width="4" height="4"></rect><rect x="308" y="698" width="4" height="4"></rect></g><g fill="%23CE1126" opacity="0.15"><rect x="86" y="36" width="6" height="6"></rect><rect x="306" y="46" width="6" height="6"></rect><rect x="46" y="356" width="6" height="6"></rect><rect x="326" y="376" width="6" height="6"></rect><rect x="106" y="696" width="6" height="6"></rect><rect x="256" y="676" width="6" height="6"></rect></g></svg>');
+  }
+
+  [data-theme="dumsor"] body::after {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="390" height="780" viewBox="0 0 390 780"><g stroke="%23333333" stroke-width="1" fill="none" opacity="0.12"><path d="M 0 60 L 40 60 L 60 40 L 90 40"></path><path d="M 0 100 L 70 100 L 90 80 L 130 80"></path><path d="M 60 0 L 60 20 L 80 40"></path><path d="M 390 50 L 340 50 L 320 70 L 280 70"></path><path d="M 390 110 L 360 110 L 340 90"></path><path d="M 330 0 L 330 30 L 310 50"></path><path d="M 0 380 L 30 380 L 50 360 L 80 360"></path><path d="M 0 440 L 60 440"></path><path d="M 390 360 L 350 360 L 330 380 L 300 380"></path><path d="M 390 420 L 340 420"></path><path d="M 0 680 L 50 680 L 70 700 L 110 700"></path><path d="M 0 720 L 80 720"></path><path d="M 30 780 L 30 750 L 50 730"></path><path d="M 390 660 L 320 660 L 300 680 L 260 680"></path><path d="M 390 720 L 330 720 L 310 700"></path><path d="M 350 780 L 350 740 L 330 720"></path></g><g fill="%23333333" opacity="0.12"><rect x="38" y="58" width="4" height="4"></rect><rect x="58" y="38" width="4" height="4"></rect><rect x="88" y="38" width="4" height="4"></rect><rect x="68" y="98" width="4" height="4"></rect><rect x="88" y="78" width="4" height="4"></rect><rect x="128" y="78" width="4" height="4"></rect><rect x="78" y="38" width="4" height="4"></rect><rect x="338" y="48" width="4" height="4"></rect><rect x="318" y="68" width="4" height="4"></rect><rect x="278" y="68" width="4" height="4"></rect><rect x="358" y="108" width="4" height="4"></rect><rect x="338" y="88" width="4" height="4"></rect><rect x="308" y="48" width="4" height="4"></rect><rect x="28" y="378" width="4" height="4"></rect><rect x="48" y="358" width="4" height="4"></rect><rect x="78" y="358" width="4" height="4"></rect><rect x="58" y="438" width="4" height="4"></rect><rect x="348" y="358" width="4" height="4"></rect><rect x="328" y="378" width="4" height="4"></rect><rect x="298" y="378" width="4" height="4"></rect><rect x="338" y="418" width="4" height="4"></rect><rect x="48" y="678" width="4" height="4"></rect><rect x="68" y="698" width="4" height="4"></rect><rect x="108" y="698" width="4" height="4"></rect><rect x="78" y="718" width="4" height="4"></rect><rect x="48" y="728" width="4" height="4"></rect><rect x="318" y="658" width="4" height="4"></rect><rect x="298" y="678" width="4" height="4"></rect><rect x="258" y="678" width="4" height="4"></rect><rect x="328" y="718" width="4" height="4"></rect><rect x="308" y="698" width="4" height="4"></rect></g><g fill="%23CE1126" opacity="0.15"><rect x="86" y="36" width="6" height="6"></rect><rect x="306" y="46" width="6" height="6"></rect><rect x="46" y="356" width="6" height="6"></rect><rect x="326" y="376" width="6" height="6"></rect><rect x="106" y="696" width="6" height="6"></rect><rect x="256" y="676" width="6" height="6"></rect></g></svg>');
+  }
+
+  [data-theme="dumsor"] .header-logo rect {
+    fill: #000000;
+  }
+
+  [data-theme="dumsor"] .header-logo text {
+    fill: #F4F3F1;
+  }
+
+  [data-theme="dumsor"] .header-logo text tspan[fill="#CE1126"] {
+    fill: #CE1126;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* Typography Foundation - Technical Brand */
+  h1, h2, h3 {
+    font-family: var(--sans);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
   body {
     font-family: var(--sans);
-    background: var(--bg);
+    background-color: var(--bg);
     color: var(--text);
     min-height: 100vh;
     transition: background 0.3s, color 0.3s;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    bottom: -100px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="390" height="780" viewBox="0 0 390 780"><g stroke="%230B0B0B" stroke-width="1" fill="none" opacity="0.08"><path d="M 0 60 L 40 60 L 60 40 L 90 40"></path><path d="M 0 100 L 70 100 L 90 80 L 130 80"></path><path d="M 60 0 L 60 20 L 80 40"></path><path d="M 390 50 L 340 50 L 320 70 L 280 70"></path><path d="M 390 110 L 360 110 L 340 90"></path><path d="M 330 0 L 330 30 L 310 50"></path><path d="M 0 380 L 30 380 L 50 360 L 80 360"></path><path d="M 0 440 L 60 440"></path><path d="M 390 360 L 350 360 L 330 380 L 300 380"></path><path d="M 390 420 L 340 420"></path><path d="M 0 680 L 50 680 L 70 700 L 110 700"></path><path d="M 0 720 L 80 720"></path><path d="M 30 780 L 30 750 L 50 730"></path><path d="M 390 660 L 320 660 L 300 680 L 260 680"></path><path d="M 390 720 L 330 720 L 310 700"></path><path d="M 350 780 L 350 740 L 330 720"></path></g><g fill="%230B0B0B" opacity="0.08"><rect x="38" y="58" width="4" height="4"></rect><rect x="58" y="38" width="4" height="4"></rect><rect x="88" y="38" width="4" height="4"></rect><rect x="68" y="98" width="4" height="4"></rect><rect x="88" y="78" width="4" height="4"></rect><rect x="128" y="78" width="4" height="4"></rect><rect x="78" y="38" width="4" height="4"></rect><rect x="338" y="48" width="4" height="4"></rect><rect x="318" y="68" width="4" height="4"></rect><rect x="278" y="68" width="4" height="4"></rect><rect x="358" y="108" width="4" height="4"></rect><rect x="338" y="88" width="4" height="4"></rect><rect x="308" y="48" width="4" height="4"></rect><rect x="28" y="378" width="4" height="4"></rect><rect x="48" y="358" width="4" height="4"></rect><rect x="78" y="358" width="4" height="4"></rect><rect x="58" y="438" width="4" height="4"></rect><rect x="348" y="358" width="4" height="4"></rect><rect x="328" y="378" width="4" height="4"></rect><rect x="298" y="378" width="4" height="4"></rect><rect x="338" y="418" width="4" height="4"></rect><rect x="48" y="678" width="4" height="4"></rect><rect x="68" y="698" width="4" height="4"></rect><rect x="108" y="698" width="4" height="4"></rect><rect x="78" y="718" width="4" height="4"></rect><rect x="48" y="728" width="4" height="4"></rect><rect x="318" y="658" width="4" height="4"></rect><rect x="298" y="678" width="4" height="4"></rect><rect x="258" y="678" width="4" height="4"></rect><rect x="328" y="718" width="4" height="4"></rect><rect x="308" y="698" width="4" height="4"></rect></g><g fill="%23CE1126" opacity="0.1"><rect x="86" y="36" width="6" height="6"></rect><rect x="306" y="46" width="6" height="6"></rect><rect x="46" y="356" width="6" height="6"></rect><rect x="326" y="376" width="6" height="6"></rect><rect x="106" y="696" width="6" height="6"></rect><rect x="256" y="676" width="6" height="6"></rect></g></svg>');
+    background-size: 390px 780px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100px;
+    right: -150px;
+    width: 500px;
+    height: 500px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="390" height="780" viewBox="0 0 390 780"><g stroke="%230B0B0B" stroke-width="1" fill="none" opacity="0.08"><path d="M 0 60 L 40 60 L 60 40 L 90 40"></path><path d="M 0 100 L 70 100 L 90 80 L 130 80"></path><path d="M 60 0 L 60 20 L 80 40"></path><path d="M 390 50 L 340 50 L 320 70 L 280 70"></path><path d="M 390 110 L 360 110 L 340 90"></path><path d="M 330 0 L 330 30 L 310 50"></path><path d="M 0 380 L 30 380 L 50 360 L 80 360"></path><path d="M 0 440 L 60 440"></path><path d="M 390 360 L 350 360 L 330 380 L 300 380"></path><path d="M 390 420 L 340 420"></path><path d="M 0 680 L 50 680 L 70 700 L 110 700"></path><path d="M 0 720 L 80 720"></path><path d="M 30 780 L 30 750 L 50 730"></path><path d="M 390 660 L 320 660 L 300 680 L 260 680"></path><path d="M 390 720 L 330 720 L 310 700"></path><path d="M 350 780 L 350 740 L 330 720"></path></g><g fill="%230B0B0B" opacity="0.08"><rect x="38" y="58" width="4" height="4"></rect><rect x="58" y="38" width="4" height="4"></rect><rect x="88" y="38" width="4" height="4"></rect><rect x="68" y="98" width="4" height="4"></rect><rect x="88" y="78" width="4" height="4"></rect><rect x="128" y="78" width="4" height="4"></rect><rect x="78" y="38" width="4" height="4"></rect><rect x="338" y="48" width="4" height="4"></rect><rect x="318" y="68" width="4" height="4"></rect><rect x="278" y="68" width="4" height="4"></rect><rect x="358" y="108" width="4" height="4"></rect><rect x="338" y="88" width="4" height="4"></rect><rect x="308" y="48" width="4" height="4"></rect><rect x="28" y="378" width="4" height="4"></rect><rect x="48" y="358" width="4" height="4"></rect><rect x="78" y="358" width="4" height="4"></rect><rect x="58" y="438" width="4" height="4"></rect><rect x="348" y="358" width="4" height="4"></rect><rect x="328" y="378" width="4" height="4"></rect><rect x="298" y="378" width="4" height="4"></rect><rect x="338" y="418" width="4" height="4"></rect><rect x="48" y="678" width="4" height="4"></rect><rect x="68" y="698" width="4" height="4"></rect><rect x="108" y="698" width="4" height="4"></rect><rect x="78" y="718" width="4" height="4"></rect><rect x="48" y="728" width="4" height="4"></rect><rect x="318" y="658" width="4" height="4"></rect><rect x="298" y="678" width="4" height="4"></rect><rect x="258" y="678" width="4" height="4"></rect><rect x="328" y="718" width="4" height="4"></rect><rect x="308" y="698" width="4" height="4"></rect></g><g fill="%23CE1126" opacity="0.1"><rect x="86" y="36" width="6" height="6"></rect><rect x="306" y="46" width="6" height="6"></rect><rect x="46" y="356" width="6" height="6"></rect><rect x="326" y="376" width="6" height="6"></rect><rect x="106" y="696" width="6" height="6"></rect><rect x="256" y="676" width="6" height="6"></rect></g></svg>');
+    background-size: 390px 780px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ensure content appears above the motifs */
+  .header, .tabs-desktop, .tabs-mobile, .main {
+    position: relative;
+    z-index: 1;
   }
 
   .header {
-    padding: 24px 20px 20px;
+    padding: 24px 20px 16px;
     border-bottom: 1px solid var(--border);
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
     max-width: 600px;
     margin: 0 auto;
+    width: 100%;
   }
 
-  .header-left h1 {
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    line-height: 1.2;
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
   }
 
-  .header-left h1 span { color: var(--accent); }
+  .header-logo {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+    height: auto;
+    display: block;
+    overflow: hidden;
+  }
+
+  .header-logo svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .header-logo text {
+    font-family: var(--sans);
+    font-weight: 900;
+    font-size: 47.6px;
+    fill: #0B0B0B;
+    letter-spacing: -1px;
+  }
+
+  .header-logo text tspan[fill="#CE1126"] {
+    fill: #CE1126;
+  }
+
   .tagline {
     font-family: var(--mono);
     font-size: 10px;
     color: var(--text-muted);
-    margin-top: 5px;
+    margin: 0;
     line-height: 1.5;
+    width: 100%;
   }
 
   .theme-toggle {
     flex-shrink: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    padding: 0;
     cursor: pointer;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text);
     text-align: center;
     transition: all 0.2s;
-    line-height: 1.4;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 50px;
   }
 
-  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
-  .theme-toggle .icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .theme-toggle .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+  }
+
+  .theme-toggle .icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .theme-toggle .toggle-label {
+    white-space: nowrap;
+  }
+
+  .theme-toggle:hover {
+    color: var(--accent);
+  }
+
+  .theme-toggle .icon {
+    font-size: 20px;
+    display: block;
+  }
+
+  .toggle-label {
+    display: block;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
 
   .main {
     max-width: 600px;
@@ -103,21 +237,28 @@
 
   .search-input {
     width: 100%;
-    padding: 16px 50px 16px 18px;
+    padding: 14px 50px 14px 18px;
     font-family: var(--sans);
     font-size: 16px;
     font-weight: 600;
     background: var(--surface);
-    border: 2px solid var(--border);
+    border: 2px solid var(--text);
     border-radius: 10px;
     color: var(--text);
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     -webkit-appearance: none;
   }
 
-  .search-input::placeholder { color: var(--text-muted); font-weight: 400; }
-  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(206, 17, 38, 0.1);
+  }
 
   .search-icon {
     position: absolute;
@@ -151,6 +292,19 @@
     line-height: 1.6;
   }
 
+  .ambiguity-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ambiguity-content svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
   [data-theme="dumsor"] .ambiguity-notice {
     background: var(--slot-bg);
     color: var(--text-muted);
@@ -167,7 +321,7 @@
     padding: 8px 12px;
     border: 2px solid var(--border);
     background: var(--surface);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: var(--mono);
     font-size: 11px;
     font-weight: 700;
@@ -176,12 +330,48 @@
     color: var(--text);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .status-button svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
   }
 
   .status-button:hover { border-color: var(--accent); color: var(--accent); }
   .status-button.active { background: var(--accent); color: var(--surface); border-color: var(--accent); }
 
-  [data-theme="dumsor"] .status-button { background: var(--slot-bg); border-color: var(--text-muted); }
+  [data-theme="dumsor"] .slot {
+    background: #1a1a1a;
+    border-color: #333333;
+  }
+
+  [data-theme="dumsor"] .slot.current-slot {
+    border-color: #CE1126;
+    background: rgba(206, 17, 38, 0.12);
+  }
+
+  [data-theme="dumsor"] .slot-name {
+    color: #F4F3F1;
+  }
+
+  [data-theme="dumsor"] .slot-state.on { 
+    background: rgba(26, 107, 42, 0.2);
+    color: #40c060;
+  }
+
+  [data-theme="dumsor"] .slot-state.off { 
+    background: rgba(206, 17, 38, 0.2);
+    color: #CE1126;
+  }
+
+  [data-theme="dumsor"] .current-slot .slot-time { 
+    color: #CE1126; 
+  }
   [data-theme="dumsor"] .status-button:hover { border-color: var(--accent); color: var(--accent); }
   [data-theme="dumsor"] .status-button.active { background: var(--accent); color: var(--slot-bg); border-color: var(--accent); }
 
@@ -189,7 +379,7 @@
     margin-top: 10px;
     padding: 8px 12px;
     background: var(--surface);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: var(--mono);
     font-size: 10px;
     color: var(--text);
@@ -227,7 +417,7 @@
     background: var(--accent-light);
     color: var(--accent);
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 4px;
     flex-shrink: 0;
   }
 
@@ -249,7 +439,7 @@
   }
 
   .status-card {
-    background: var(--surface);
+    background-color: var(--surface);
     border: 2px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
@@ -272,7 +462,7 @@
     background: var(--accent-light);
     color: var(--accent);
     padding: 4px 10px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-weight: 700;
   }
 
@@ -287,17 +477,32 @@
     justify-content: center;
     font-size: 24px;
     flex-shrink: 0;
+    position: relative;
+  }
+
+  .status-indicator svg {
+    width: 28px;
+    height: 28px;
+    display: block;
   }
 
   .status-indicator.on {
-    background: var(--on-green-bg);
-    color: var(--on-green);
+    background: #d4edda;
+    color: #1a6b2a;
     animation: pulse-green 2s infinite;
   }
 
+  .status-indicator.on svg {
+    fill: #1a6b2a;
+  }
+
   .status-indicator.off {
-    background: var(--off-red-bg);
-    color: var(--off-red);
+    background: #f8d7da;
+    color: #CE1126;
+  }
+
+  .status-indicator.off svg {
+    fill: #CE1126;
   }
 
   @keyframes pulse-green {
@@ -305,17 +510,10 @@
     50% { box-shadow: 0 0 0 8px rgba(26,107,42,0); }
   }
 
-  [data-theme="dumsor"] .status-indicator.on { animation: pulse-amber 2s infinite; }
-
-  @keyframes pulse-amber {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(64,192,96,0.4); }
-    50% { box-shadow: 0 0 0 10px rgba(64,192,96,0); }
-  }
-
   .status-label { font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
   .status-main { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; margin-top: 2px; }
-  .status-main.on { color: var(--on-green); }
-  .status-main.off { color: var(--off-red); }
+  .status-main.on { color: #1a6b2a; }
+  .status-main.off { color: #CE1126; }
 
   .status-until { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
@@ -329,29 +527,34 @@
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    background: var(--slot-bg);
+    background: #f0ebe2;
     border-radius: 8px;
-    border: 1px solid transparent;
+    border: 1px solid var(--border);
+    font-size: 13px;
   }
 
-  .slot.current-slot { border-color: var(--accent); background: var(--accent-light); }
+  .slot.current-slot { 
+    border-color: #CE1126;
+    background: rgba(206, 17, 38, 0.08);
+  }
 
   .slot-time { font-family: var(--mono); font-size: 11px; color: var(--text-muted); width: 110px; flex-shrink: 0; }
-  .slot-name { font-size: 13px; font-weight: 600; flex: 1; }
+  .slot-name { font-size: 13px; font-weight: 600; flex: 1; color: var(--text); }
 
   .slot-state {
     font-family: var(--mono);
     font-size: 10px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 3px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
   }
 
-  .slot-state.on { background: var(--on-green-bg); color: var(--on-green); }
-  .slot-state.off { background: var(--off-red-bg); color: var(--off-red); }
+  .slot-state.on { background: #d4edda; color: #1a6b2a; }
+  .slot-state.off { background: #f8d7da; color: #CE1126; }
 
-  .current-slot .slot-time { color: var(--accent); }
-  .slot-now-label { font-family: var(--mono); font-size: 9px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .current-slot .slot-time { color: #CE1126; font-weight: 600; }
+  .slot-now-label { font-family: var(--mono); font-size: 9px; color: #CE1126; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
 
   .last-updated { margin-top: 20px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-family: var(--mono); font-size: 10px; color: var(--text-muted); line-height: 1.6; }
   .last-updated strong { color: var(--text); }
@@ -391,7 +594,7 @@
     padding: 12px 14px;
     background: transparent;
     border: 2px solid var(--accent);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: var(--sans);
     font-size: 12px;
     font-weight: 700;
@@ -641,7 +844,7 @@
     background: var(--accent-light);
     color: var(--accent);
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 4px;
     flex-shrink: 0;
   }
 
@@ -724,14 +927,16 @@
 <body>
 
 <div class="header">
-  <div class="header-left">
-    <h1>ECG <span>Outage</span> Tracker</h1>
-    <p class="tagline">Dealing with light-off is challenging enough;<br>reading the schedule shouldn't be.</p>
+  <div class="header-top">
+    <svg class="header-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 96" preserveAspectRatio="xMinYMid meet">
+      <text x="0" y="80" class="s" fill="#0B0B0B">ECG <tspan fill="#CE1126">OUTAGE</tspan> TRACKER</text>
+    </svg>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+      <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="currentColor"></path></svg></span>
+      <span class="toggle-label">Dumsor<br>Mode</span>
+    </button>
   </div>
-  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-    <span class="icon">🔦</span>
-    Dumsor<br>Mode
-  </button>
+  <p class="tagline">Light-off is hard enough<br>Reading the schedule shouldn't be.</p>
 </div>
 
 <!-- Desktop Tabs -->
@@ -804,9 +1009,9 @@
     </div>
 
     <div class="empty-state" id="emptyState">
-      <div class="big-icon">💡</div>
+      <div class="big-icon"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="72" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="currentColor"></path></svg></div>
       <h2>Find your schedule</h2>
-      <p>Type your suburb or area above.<br>We'll tell you exactly when you're on and off.</p>
+      <p>Start typing your area above to see when you're scheduled to be on and off.</p>
     </div>
 
     <div class="last-updated">
@@ -814,8 +1019,7 @@
     </div>
 
     <div class="disclaimer">
-      Not an ECG product. Created by someone who is also currently in the dark and just wants to know when they can use their fan.<br><br>
-      <strong>If lights are off when they should be on — contact ECG directly. I have no power in the matter.</strong>
+      Not an ECG product. Created by someone juggling: work from home, a baby, bad network, usage limits, and a broken freezer. If lights are off when they should be on — contact ECG directly. I have no power in the matter.
     </div>
   </div>
 
@@ -825,7 +1029,7 @@
       <div id="favourites-container">
         <div class="favourites-empty">
           <div class="favourites-empty-icon">⭐</div>
-          <div>No favourites yet.<br>Star areas from the Home tab!</div>
+          <div>No favourites yet. Star the areas that you need to monitor in the Home tab!</div>
         </div>
       </div>
     </div>
@@ -947,7 +1151,7 @@ function toggleTheme() {
   const isDumsor = document.documentElement.getAttribute('data-theme') === 'dumsor';
   document.documentElement.setAttribute('data-theme', isDumsor ? '' : 'dumsor');
   const btn = document.getElementById('themeToggle');
-  btn.innerHTML = isDumsor ? '<span class="icon">🔦</span>Dumsor<br>Mode' : '<span class="icon">☀️</span>Light<br>Mode';
+  btn.innerHTML = isDumsor ? '<span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="currentColor"></path></svg></span><span class="toggle-label">Dumsor<br>Mode</span>' : '<span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></span><span class="toggle-label">Light<br>Mode</span>';
 }
 
 // ─── Date Display ─────────────────────────────────────────────────────────────
@@ -989,11 +1193,11 @@ function renderResults(results, query) {
     
     html += `<div class="ambiguity-notice">
       <div class="ambiguity-content">
-        💡 Looks like your suburb is split across different power lines. Check the group and region below to find your specific area.
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="currentColor"></path></svg><span>Looks like your suburb is split across different power lines. Check the group and region below to find your specific area.</span>
       </div>
       <div class="ambiguity-buttons">
-        <button class="status-button ${userLightStatus === 'on' ? 'active' : ''}" onclick="setLightStatus('on')">💡 Light ON</button>
-        <button class="status-button ${userLightStatus === 'off' ? 'active' : ''}" onclick="setLightStatus('off')">⚡ Light OFF</button>
+        <button class="status-button ${userLightStatus === 'on' ? 'active' : ''}" onclick="setLightStatus('on')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="currentColor"></path></svg><span>Light ON</span></button>
+        <button class="status-button ${userLightStatus === 'off' ? 'active' : ''}" onclick="setLightStatus('off')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg><span>Light OFF</span></button>
       </div>`;
     
     if (userLightStatus && isDataAvailable) {
@@ -1109,14 +1313,14 @@ function showStatus(area) {
 
   if (isCurrentlyOff) {
     indicator.className = 'status-indicator off';
-    indicator.textContent = '⚡';
+    indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="#CE1126"></path></svg>';
     statusMain.className = 'status-main off';
     statusMain.textContent = 'Currently OFF';
     const endH = currentSlot.end === 24 ? 0 : currentSlot.end;
     statusUntil.textContent = `Power back at ${padZ(endH)}:00`;
   } else {
     indicator.className = 'status-indicator on';
-    indicator.textContent = '💡';
+    indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="#1a6b2a"></path></svg>';
     statusMain.className = 'status-main on';
     statusMain.textContent = 'Currently ON';
     if (currentSlot) {
