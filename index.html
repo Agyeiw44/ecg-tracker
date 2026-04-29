@@ -441,9 +441,283 @@
   .date-display { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 20px; }
   .date-display span { color: var(--text); font-weight: 700; }
 
-  @media (max-width: 400px) {
-    .header-left h1 { font-size: 18px; }
-    .status-main { font-size: 20px; }
+  @media (max-width: 600px) {
+    .header {
+      padding: 16px 20px 12px;
+    }
+
+    .header-left h1 {
+      font-size: 18px;
+    }
+
+    .theme-toggle {
+      padding: 6px 10px;
+      font-size: 9px;
+    }
+
+    .theme-toggle .icon {
+      font-size: 14px;
+      margin-bottom: 1px;
+    }
+  }
+
+  /* ─── Tab Navigation ─────────────────────────────────────────────────────── */
+  .tabs-desktop {
+    display: none;
+    max-width: 600px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+  }
+
+  .tabs-desktop.visible {
+    display: flex;
+  }
+
+  .tab-button {
+    flex: 1;
+    padding: 14px 12px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .tab-button:hover {
+    color: var(--text);
+  }
+
+  .tab-button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tabs-mobile {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 8px 0;
+    z-index: 100;
+  }
+
+  .tabs-mobile.visible {
+    display: flex;
+  }
+
+  .tab-button-mobile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .tab-button-mobile:hover {
+    color: var(--text);
+  }
+
+  .tab-button-mobile.active {
+    color: var(--accent);
+  }
+
+  .tab-button-mobile-icon {
+    font-size: 20px;
+  }
+
+  .tab-button-mobile-label {
+    font-size: 9px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .tab-button-mobile:hover .tab-button-mobile-label {
+    opacity: 1;
+  }
+
+  .main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  @media (max-width: 600px) {
+    .main {
+      padding: 24px 20px 100px 20px;
+    }
+
+    .tabs-desktop {
+      display: none !important;
+    }
+
+    .tabs-mobile {
+      display: flex !important;
+    }
+  }
+
+  @media (min-width: 601px) {
+    .tabs-desktop {
+      display: flex !important;
+    }
+
+    .tabs-mobile {
+      display: none !important;
+    }
+  }
+
+  /* ─── Tab Content ────────────────────────────────────────────────────────── */
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* ─── Favourites View ────────────────────────────────────────────────────── */
+  .favourites-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 601px) {
+    .favourites-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .favourite-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .favourite-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .favourite-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding-right: 24px;
+  }
+
+  .favourite-card-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .favourite-card-group {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .favourite-card-region {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+  }
+
+  .favourite-card-delete {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 24px;
+    padding: 4px 6px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+
+  .favourite-card-delete:hover {
+    color: var(--off-red);
+  }
+
+  .favourites-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .favourites-empty-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  /* ─── Holding Pages ──────────────────────────────────────────────────────── */
+  .holding-page {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .holding-page-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .holding-page-text {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ─── Star Icon ──────────────────────────────────────────────────────────── */
+  .star-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px 8px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .star-button:hover {
+    transform: scale(1.1);
+  }
+
+  .star-button.starred {
+    color: var(--accent);
   }
 </style>
 </head>
@@ -460,55 +734,117 @@
   </button>
 </div>
 
+<!-- Desktop Tabs -->
+<div class="tabs-desktop visible">
+  <button class="tab-button active" data-tab="home" onclick="switchTab('home')">Home</button>
+  <button class="tab-button" data-tab="favourites" onclick="switchTab('favourites')">Favourites</button>
+  <button class="tab-button" data-tab="map" onclick="switchTab('map')">Map</button>
+  <button class="tab-button" data-tab="feed" onclick="switchTab('feed')">Feed</button>
+</div>
+
+<!-- Mobile Bottom Navigation -->
+<div class="tabs-mobile visible">
+  <button class="tab-button-mobile active" data-tab="home" onclick="switchTab('home')">
+    <span class="tab-button-mobile-icon">🏠</span>
+    <span class="tab-button-mobile-label">Home</span>
+  </button>
+  <button class="tab-button-mobile" data-tab="favourites" onclick="switchTab('favourites')">
+    <span class="tab-button-mobile-icon">⭐</span>
+    <span class="tab-button-mobile-label">Favourites</span>
+  </button>
+  <button class="tab-button-mobile" data-tab="map" onclick="switchTab('map')">
+    <span class="tab-button-mobile-icon">🗺️</span>
+    <span class="tab-button-mobile-label">Map</span>
+  </button>
+  <button class="tab-button-mobile" data-tab="feed" onclick="switchTab('feed')">
+    <span class="tab-button-mobile-icon">📡</span>
+    <span class="tab-button-mobile-label">Feed</span>
+  </button>
+</div>
+
 <div class="main">
-  <div class="date-display" id="dateDisplay"></div>
+  <!-- HOME TAB -->
+  <div id="home-tab" class="tab-content active">
+    <div class="date-display" id="dateDisplay"></div>
 
-  <div class="search-wrap">
-    <input
-      type="text"
-      class="search-input"
-      id="searchInput"
-      placeholder="Search your area e.g. Madina…"
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-    />
-    <span class="search-icon">🔍</span>
-    <div class="results-list" id="resultsList"></div>
-  </div>
-
-  <div class="status-card" id="statusCard">
-    <div class="status-header">
-      <div class="area-name" id="areaName"></div>
-      <div class="group-badge" id="groupBadge"></div>
+    <div class="search-wrap">
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Search your area e.g. Madina…"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      />
+      <span class="search-icon">🔍</span>
+      <div class="results-list" id="resultsList"></div>
     </div>
-    <div class="current-status">
-      <div class="status-indicator" id="statusIndicator"></div>
-      <div class="status-text-wrap">
-        <div class="status-label">Right now</div>
-        <div class="status-main" id="statusMain"></div>
-        <div class="status-until" id="statusUntil"></div>
+
+    <div class="status-card" id="statusCard">
+      <div class="status-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="area-name" id="areaName"></div>
+          <button class="star-button" id="starButton" onclick="toggleFavourite()" title="Add to favourites">☆</button>
+        </div>
+        <div class="group-badge" id="groupBadge"></div>
+      </div>
+      <div class="current-status">
+        <div class="status-indicator" id="statusIndicator"></div>
+        <div class="status-text-wrap">
+          <div class="status-label">Right now</div>
+          <div class="status-main" id="statusMain"></div>
+          <div class="status-until" id="statusUntil"></div>
+        </div>
+      </div>
+      <div class="timetable">
+        <div class="timetable-title">Today's full schedule</div>
+        <div class="slots" id="slotsContainer"></div>
       </div>
     </div>
-    <div class="timetable">
-      <div class="timetable-title">Today's full schedule</div>
-      <div class="slots" id="slotsContainer"></div>
+
+    <div class="empty-state" id="emptyState">
+      <div class="big-icon">💡</div>
+      <h2>Find your schedule</h2>
+      <p>Type your suburb or area above.<br>We'll tell you exactly when you're on and off.</p>
+    </div>
+
+    <div class="last-updated">
+      <strong>Last updated:</strong> April 29, 2026 — Source: ECG 800MW Global Load Management Timetable (Apr 25 – May 1, 2026)
+    </div>
+
+    <div class="disclaimer">
+      Not an ECG product. Created by someone who is also currently in the dark and just wants to know when they can use their fan.<br><br>
+      <strong>If lights are off when they should be on — contact ECG directly. I have no power in the matter.</strong>
     </div>
   </div>
 
-  <div class="empty-state" id="emptyState">
-    <div class="big-icon">💡</div>
-    <h2>Find your schedule</h2>
-    <p>Type your suburb or area above.<br>We'll tell you exactly when you're on and off.</p>
+  <!-- FAVOURITES TAB -->
+  <div id="favourites-tab" class="tab-content">
+    <div style="padding-top: 12px;">
+      <div id="favourites-container">
+        <div class="favourites-empty">
+          <div class="favourites-empty-icon">⭐</div>
+          <div>No favourites yet.<br>Star areas from the Home tab!</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="last-updated">
-    <strong>Last updated:</strong> April 29, 2026 — Source: ECG 800MW Global Load Management Timetable (Apr 25 – May 1, 2026)
+  <!-- MAP TAB -->
+  <div id="map-tab" class="tab-content">
+    <div class="holding-page">
+      <div class="holding-page-icon">🗺️</div>
+      <div class="holding-page-text">Please, I'm coming...</div>
+    </div>
   </div>
 
-  <div class="disclaimer">
-    Not an ECG product. Created by someone who is also currently in the dark and just wants to know when they can use their fan.<br><br>
-    <strong>If lights are off when they should be on — contact ECG directly. I have no power in the matter.</strong>
+  <!-- FEED TAB -->
+  <div id="feed-tab" class="tab-content">
+    <div class="holding-page">
+      <div class="holding-page-icon">📡</div>
+      <div class="holding-page-text">Please, I'm coming...</div>
+    </div>
   </div>
 </div>
 
@@ -760,6 +1096,9 @@ function showStatus(area) {
   document.getElementById('areaName').textContent = area.name;
   document.getElementById('groupBadge').textContent = `Group ${area.group} · ${area.region}`;
 
+  // Update star button
+  updateStarButton();
+
   const currentSlotIdx = getCurrentSlotIndex(h);
   const currentSlot = slots ? slots[currentSlotIdx] : null;
   const isCurrentlyOff = currentSlot ? currentSlot.isOff : false;
@@ -825,6 +1164,160 @@ document.addEventListener('click', e => {
     document.getElementById('resultsList').classList.remove('visible');
   }
 });
+
+// ─── Tab Management ───────────────────────────────────────────────────────────
+let scrollPositions = {};
+let currentTab = 'home';
+
+function switchTab(tabName) {
+  // Save scroll position for current tab
+  scrollPositions[currentTab] = window.scrollY;
+
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+
+  // Remove active from all buttons
+  document.querySelectorAll('.tab-button, .tab-button-mobile').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  // Show new tab
+  document.getElementById(`${tabName}-tab`).classList.add('active');
+
+  // Mark buttons as active
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+  document.querySelectorAll(`[data-tab="${tabName}"]`).forEach(btn => {
+    btn.classList.add('active');
+  });
+
+  currentTab = tabName;
+
+  // Restore scroll position for new tab
+  setTimeout(() => {
+    window.scrollTo(0, scrollPositions[tabName] || 0);
+  }, 0);
+
+  // Update favourites if switching to that tab
+  if (tabName === 'favourites') {
+    renderFavourites();
+  }
+}
+
+// ─── Favourites Management ────────────────────────────────────────────────────
+function loadFavourites() {
+  const stored = localStorage.getItem('ecg_favourites');
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveFavourites(favourites) {
+  localStorage.setItem('ecg_favourites', JSON.stringify(favourites));
+  updateStarButton();
+}
+
+function toggleFavourite() {
+  if (!selectedArea) return;
+
+  const favourites = loadFavourites();
+  const index = favourites.findIndex(
+    f => f.name === selectedArea.name && f.group === selectedArea.group
+  );
+
+  if (index === -1) {
+    // Add to favourites
+    favourites.push(selectedArea);
+  } else {
+    // Remove from favourites
+    favourites.splice(index, 1);
+  }
+
+  saveFavourites(favourites);
+}
+
+function updateStarButton() {
+  if (!selectedArea) return;
+
+  const favourites = loadFavourites();
+  const isFavourited = favourites.some(
+    f => f.name === selectedArea.name && f.group === selectedArea.group
+  );
+
+  const starBtn = document.getElementById('starButton');
+  if (isFavourited) {
+    starBtn.textContent = '★';
+    starBtn.classList.add('starred');
+  } else {
+    starBtn.textContent = '☆';
+    starBtn.classList.remove('starred');
+  }
+}
+
+function renderFavourites() {
+  const favourites = loadFavourites();
+  const container = document.getElementById('favourites-container');
+
+  if (favourites.length === 0) {
+    container.innerHTML = `
+      <div class="favourites-empty">
+        <div class="favourites-empty-icon">⭐</div>
+        <div>No favourites yet.<br>Star areas from the Home tab!</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="favourites-grid">
+      ${favourites
+        .map(
+          (area, idx) => `
+        <div class="favourite-card" onclick="searchAndSelectArea('${area.name}')">
+          <button class="favourite-card-delete" onclick="event.stopPropagation(); removeFavourite(${idx})" title="Remove from favourites">×</button>
+          <div class="favourite-card-header">
+            <span class="favourite-card-name">${area.name}</span>
+            <span class="favourite-card-group">Group ${area.group}</span>
+          </div>
+          <div class="favourite-card-region"><strong>${area.region}</strong></div>
+        </div>
+      `
+        )
+        .join('')}
+    </div>
+  `;
+}
+
+function removeFavourite(index) {
+  const favourites = loadFavourites();
+  favourites.splice(index, 1);
+  saveFavourites(favourites);
+  renderFavourites();
+}
+
+function searchAndSelectArea(areaName) {
+  // Switch to Home tab
+  switchTab('home');
+
+  // Set search input
+  const searchInput = document.getElementById('searchInput');
+  searchInput.value = areaName;
+
+  // Search and get results
+  const results = search(areaName);
+
+  // Find the exact match
+  const exactMatch = results.find(r => r.name === areaName);
+
+  if (exactMatch) {
+    // Show the status directly
+    showStatus(exactMatch);
+    // Hide results list
+    document.getElementById('resultsList').classList.remove('visible');
+  } else {
+    // Show results if not exact match
+    renderResults(results, areaName);
+  }
+}
 
 // ─── Share Functions ──────────────────────────────────────────────────────────
 function shareViaWhatsApp() {
