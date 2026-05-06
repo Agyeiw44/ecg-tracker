@@ -126,18 +126,21 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-width: 600px;
-    margin: 0 auto;
-    width: 100%;
   }
 
   .header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 16px;
     width: 100%;
-    min-width: 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
   }
 
   .header-logo {
@@ -184,32 +187,15 @@
     padding: 0;
     cursor: pointer;
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 10px;
     color: var(--text);
     text-align: center;
     transition: all 0.2s;
-    line-height: 1.3;
+    line-height: 1.4;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    min-width: 50px;
-  }
-
-  .theme-toggle .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-  }
-
-  .theme-toggle .icon svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .theme-toggle .toggle-label {
-    white-space: nowrap;
+    gap: 4px;
   }
 
   .theme-toggle:hover {
@@ -936,7 +922,7 @@
       <span class="toggle-label">Dumsor<br>Mode</span>
     </button>
   </div>
-  <p class="tagline">Light-off is hard enough<br>Reading the schedule shouldn't be.</p>
+  <p class="tagline">Dealing with light-off is challenging enough;<br>reading the schedule shouldn't be.</p>
 </div>
 
 <!-- Desktop Tabs -->
@@ -1011,7 +997,7 @@
     <div class="empty-state" id="emptyState">
       <div class="big-icon"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="72" viewBox="0 0 16 24"><path d="M9 0 L0 13 L6 13 L4 24 L15 9 L9 9 L13 0 Z" fill="currentColor"></path></svg></div>
       <h2>Find your schedule</h2>
-      <p>Start typing your area above to see when you're scheduled to be on and off.</p>
+      <p>Type your suburb or area above.<br>We'll tell you exactly when you're on and off.</p>
     </div>
 
     <div class="last-updated">
@@ -1019,7 +1005,8 @@
     </div>
 
     <div class="disclaimer">
-      Not an ECG product. Created by someone juggling: work from home, a baby, bad network, usage limits, and a broken freezer. If lights are off when they should be on — contact ECG directly. I have no power in the matter.
+      Not an ECG product. Created by someone who is also currently in the dark and just wants to know when they can use their fan.<br><br>
+      <strong>If lights are off when they should be on — contact ECG directly. I have no power in the matter.</strong>
     </div>
   </div>
 
@@ -1029,7 +1016,7 @@
       <div id="favourites-container">
         <div class="favourites-empty">
           <div class="favourites-empty-icon">⭐</div>
-          <div>No favourites yet. Star the areas that you need to monitor in the Home tab!</div>
+          <div>No favourites yet.<br>Star areas from the Home tab!</div>
         </div>
       </div>
     </div>
@@ -1092,20 +1079,154 @@ const DATA = {
   }
 };
 
-const AREAS_RAW = {
-  A: {"VOLTA":["Adidome Township","Akyemfo","Mafi Anfoe","Mepe","Dagorme","Keta"],"ACCRA":["South Odorkor","Madina Market","Tseaddo","Legon"]},
-  B: {"VOLTA":["Oklahoma","Keta"],"ACCRA":["Abossey Okai","Keta","TseAddo"]},
-  C: {"VOLTA":["Tokor","Keta"],"ACCRA":["Asylum Down","Labone","TseAddo"]}
+// ─── V3.3 Data Architecture ──────────────────────────────────────────────────
+// TIER 1: DISTRICTS — authoritative ECG district list (source: ecg.com.gh)
+// Never modified by ingest; updated only on manual ECG sync.
+const DISTRICTS = {
+  "Accra East": [
+    "Mampong District", "Kwabenya District", "Legon District",
+    "Dodowa District", "Roman Ridge District", "Adentan District",
+    "Teshie District", "Makola District"
+  ],
+  "Accra West": [
+    "Amasaman District", "Achimota District", "Nsawam District",
+    "Ablekuma District", "Bortianor District", "Korle Bu District",
+    "Dansoman District", "Kaneshie District"
+  ],
+  "Tema": [
+    "Ada District", "Afienya District", "Ashaiman District",
+    "Juapong District", "Krobo District", "Nungua District",
+    "Prampram District", "Tema North District", "Tema South District"
+  ],
+  "Ashanti East": [
+    "Ayigya District", "Effiduase District", "Ejisu District",
+    "Konongo District", "Kwabre District", "Mampong Ashanti District",
+    "Manhyia District"
+  ],
+  "Ashanti South": [
+    "New Edubiase District", "Asokwa District", "Bekwai District",
+    "Dunkwa District", "Manso Nkwanta District", "Obuasi District"
+  ],
+  "Ashanti West": [
+    "Suame District", "Bibiani District", "Ahinsan District",
+    "Abuakwa District", "Danyame District", "Adum District",
+    "Offinso District"
+  ],
+  "Eastern": [
+    "Abetifi District", "Akim Oda District", "Akim Tafo District",
+    "Akuse District", "Asamankese District", "Begoro District",
+    "Donkorkrom District", "Kade District", "Koforidua District",
+    "Kibi District", "Mpraeso District", "New Abirem District",
+    "Nkawkaw District", "Suhum District"
+  ],
+  "Western": [
+    "Agona Nkwanta District", "Axim District", "Bibiani District",
+    "Bogoso District", "Enchi District", "Prestea District",
+    "Sefwi Wiawso District", "Sekondi District", "Takoradi District",
+    "Tarkwa District"
+  ],
+  "Central": [
+    "Agona Swedru District", "Assin Fosu District", "Bremang Asikuma District",
+    "Cape Coast District", "Dunkwa-on-Offin District", "Kasoa District",
+    "Mfantseman District", "Twifo Praso District", "Winneba District"
+  ],
+  "Volta": [
+    "Aflao District", "Akatsi District", "Denu District",
+    "Ho District", "Hohoe District", "Kpando District"
+  ]
 };
 
-const SEARCH_INDEX = [];
-for (const [group, regions] of Object.entries(AREAS_RAW)) {
-  for (const [region, areas] of Object.entries(regions)) {
-    for (const area of areas) {
-      SEARCH_INDEX.push({ name: area, group, region });
+// ─── TIER 2: SCHEDULED_OUTAGES ─────────────────────────────────────────────
+// Dynamic array — append/update only, never delete.
+// Migrated from V3.2 AREAS_RAW (no date/time data; placeholders used).
+// Future ingest via n8n will populate outage_date, outage_time_start/end.
+const SCHEDULED_OUTAGES = [
+  // Group A — ACCRA
+  ...["Abibiman School","Ablekuma Tigo pole","Ablekumna Agape","Abofu","Aboma","Abotsi Hanya","Abrantie Spot","Abuom","Acces Shopping Mall","Accra Sound","Adabraka Free Town","Adabraka Methodist","Adeiso","Adenta Estates","Adjirigannor","Adoagyiri","Adusa Quarters","Adwensa Publication","Afiaman","Afoaman","Africa Regency Hotel","Agbeve Top","Aggies Spot","Agingo","Agoro TV","Agorwu","Agya Herbal","Agyeman","Ahavana","Ahlekuma Abease","Airport West Hotel","Akoto Bu","Akotoku Academy","Alogboshie","Amamole","Amanfro","Amasaman","Amelia","Amen Amen","Amrahia","Angelina House","Antieku","Apollonia","Armoring","Arts Commercial Centre","Asafo Adjei","Asantewaa Hotel","Ashongaman Estates","Asofa","Atico","Atomic Guest House","Atomic Junction","Atta Mills","Aviation House","Awoshie Massalatsi","Awula Wulu","Ayalolo","Ayigbe Town","Ayighe Park","Azonto","Bank of Ghana Quarters","Baron","Bawaleshie","Been-To","Beijing Clinic","Bella Hotel","Best Point","Bethel","Blue Lagoon","Borkorborkor","Bosomtwi Hotel","Butler Lines","CMB Flats","CP","Camp 2","Canada City","Capital Hill","Catholic Book Centre","Cham Homes","Charles Lane","Chief Iman","City Appliance","Clebu","Club 1000","Cocoa Clinic","Coffeec Farmers Association","College of Physicians & Surgeons","Comet Estates","Commando","Composite Site","Congo Junction","Coultar","Daily Foods","Danafco","Danfa","Dar Es Salam","Dark Mark","Darkuman Mosque","Darkunan Quarters","Dedeman","Dem","Demod","Dome New Market","Dome Pillar","Dorkotwoa","Dr. Atekpe","East Cantonment","Ecobank HQ","Ecole Francaise","Emmanuel Eye Clime","Erata Hotel","Expo 67","Exzorpa","Fan Milk","Fan Milk Annex","Fankyenekor","Fise","Forest Hotel","Fulgrip","GNTC Bottling","GTUC Campus","Ghana Hostels","Gloriland Hotel","Government Boys","Gye Nyatne Hotel","Haah Yard","Hallem","Heritage Tower","Hotel Adodo","Hurma Camp Goil Filling Station","Independence Square","Islamic University","Israel","Ist Junction","James Town Police Station","Japan Motors","Jayee University","Joe Joe","John Teye SHS","KNUST Campus","Kalamazoo","Kaneshie Flats","Kaneshie Sports Complex","Katapor","King of Kings","Kings Cottage","Kofi Capito","Kofi Quaye","Kojo Sardine","Konka","Kotobabi Police Station","Kpehe Catholic Church","Kpone Seduase","Krabokese","Kwabenya Adom","La Beach Hotel","La Cemetery","La Palm Royal Beach Hotel","La T-Junction","Lakeside Community 1 & 8","Lapaz","Lawyer Kom","Legon","Legon Hills","Liberty House","Libya Quarters","Lotto Kiosk","Madina","Madina Estate and its environs","Madina Market","Madina Mosque","Makola","Mallain Atta Market","Mallam Junction","Mallam Market","Manhia","Manme Nkran","Manna Mission Hospital","Marfoktom","Mataheko Police Barracks","Max Mart","Maxixis Tires","Mayera","Mensknom","Mensvic Hotel","Ministry of Information","Mr. Adjei","NADMO","NPP Office","NTHC Estates","National Archives","Nativity","Nayak","Neoplan","New Achimota Station","New Ayuwaso","New England","New Legon","Nii Boye Town","Nkatie Burger","Nktun","North Dzorwulu","North Legon","Nyamekrom","Obinim","Obuahemaa","Odorgonno","Ofanker Railway Bridge","Ogbojo CSIR and its environs","Okponglo Booster Station","Oparekrom","Opcibia","Opeibea","Osu Anglican","Otieshie","Otinibi","Otoase","Oxford Street","Oyibi","PH Hotel","PRESEC","PZ","Palm Wine Junction","Pan Willy Junction","Pantang Hospital","Part of East Legon","Part of Joma","Part of Kwashieman","Part of Okponglo","Parts of Abokobi","Parts of Abossey Okai","Parts of Accra New Town","Parts of Adabraka","Parts of Adogonno","Parts of Airport Residential Area","Parts of Alhan","Parts of America House","Parts of Appiah Danqush","Parts of Asofa","Parts of Asylum Down","Parts of Atomic Commission","Parts of Dansoman SSNIT Flats","Parts of Greda Estates","Parts of Katamunto","Parts of Kokumiemic","Parts of Kotobabi Polyclinic","Parts of Lartebiokorshie","Parts of Legon Hills","Parts of Malejor","Parts of Mataheko","Parts of Maye Hot","Parts of New Fadama","Parts of Nmai Djorn","Parts of North Kaneshie","Parts of Nsawam Township","Parts of Odorkor Alahama","Parts of Ofankor","Parts of Osu Oxford Street","Parts of Palm Wine Junction","Parts of Sowntuom","Parts of Sukura","Parts of Tesano","Parts of Trasacco Estates","Parts of Zoomlion","Pegasus","Pentecost Hospital","Pentecost University","Photo Club","Pig Farm","Pito House","Pokuase Interchange","Police Depot","Police Detective Academy","Police Quarters","Polo Court","Purts of NIC Joma Township","Raaco","Rasta","Rawlings Circle","Regimanuel Grey HQ","Ridge Tower","Ringway Estates","SSNIT Archives","Sabon Zongo","Sakuman","Santoe","Saphier Plastics","Sasaubi","Sawmill","Sea Lady","Second Chance","Seven Days","Social Welfare","Sotrec","South Odorkor","St Ann's School","St. Anthony","St. Theresa","Suncity","Swam Mill","TV Africa","Taifa","Teachers Hall","Tebibiano","Telecom","Teshie Demo","Timber Market","Trokor","TseAddo","Tudu/Aflao Station","UMB Bank","UPSA","Valley View University","Victory Bible Church","Villagio","Washington","Wato","Wele","West Africa Décor","Western World Trading","Winners Chapel","Woolworth","World Bank","Zamruna Line","Zenith College","Zoti","part of Kuntunse","part of Toman"].map(n => ({ neighborhood: n, region: "Accra East", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group A — VOLTA
+  ...["Adaklu Sofa","Adaklu Waya","Adexor","Adidome Township","Aflas Township","Akoefe","Akpenamawu","Akyemfo","Alay\u0131","Amedzofe","Anfoeta Towns","Apenkwa","Battor Ghagbavunu","Bodada Towns","Bowiri Towns","Da aba","Depe Knando Technical","Dzologborgame","Dzolokpuita","Fume","Hodzoga","KPASEC","Klefe Towns","Kpando Township","Kpedze Towns","Kpenoe","Kpoeta","Kpoeta and it's surroundings","Kudara","Kudje","Kutime","Kwamekrom","Logba Towns","Mafi Anfoe","Matse","Mepe Dagorme","Microwave","Nyrve","Part of Jasikan Township","Part of Mafi Towns","Police depot","Shiave","Soldiers Barracks","Tanyigbe","Tapa Amanya","Ve-Golokwati","Worawora","Ziav\u0131 Towns","part of Asickpe","part of Hohoc","part of Kpando Towns","part of Nyagbo towns"].map(n => ({ neighborhood: n, region: "Volta", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group A — ASHANTI
+  ...["AMASS","Ababoga","Abano","Abenkyim","Abira","Aboabogya","Abore","Abosonmtwigya","Abouyeikrom","Abretwen","Absubo Tetekass","Abubuasin","Aburaso","Achina","Adanse","Adjemesu","Adubenso","Adubensoben","Adubensokese","Adukrom","Adumakasekese","Adunkwane","Adwampong","Adwenase","Afari","Afrancho","Agona","Agycikrou","Ahuakaw-Makro","Ahwiaa Town Cultural Centre","Airport","Akaako","AkataneaseNweneso","Akorem","Akyeakrom","Alhwerewa","Amakom","Amangoase","Amankyea","Amosaman","Ampahame","Ankaase","Anomangye","Antobuave","Antoukrom","Anwiankwanta","Anwonakrom","Anyinam","Apaaso","Apitikuoko","Apitiso No. 1 & 2","Appiadu","Aprabon","Aprede","Apromoase","Aptomase","Asabi","Asafo","Asafo Dadesnaba","Asafo Market","Asamang","Asankare","Asanso Senfi","Asikafuoambantem","Asikuma Town","Asokore Mampong","Asokwa Oldtown","Asokwa Pentecost","Asokwa Sobolo","Asori Nkwanta","Asotwe","Asounipon","Asumang","Asuobua","Atabrakoso","Ataneata","Atwedie","Atwire","Awhia","Awina Fanti Newtown","BRRI","Babianiha","Bampenase","Baso Club","Bediem","Bhenase","Boko","Bomfa","Bompata","Bonifa","Breku","Breman","Brigima","CGyankobaah","CRI","Chichibon","Chwumasi","Clicks & Chicken","Daa","Dagomba line","Dampong","Deduako","Denase","Denkyembouso","Dida","Domeabra","Dominase","Donaso","Donyina","Dote","Dulu","Dwendwenase","Edwanfo","Edwinase","Ejisu Sec","Ekyem","Esaase Bontefofum","Essen","Essuowin","Fenaso Nisvantu","Forestry","Forestry Sch","Fouse","Freetown","GBC","Gausu","Gyekye","Hedase","Heman","Hiawu-Besease","Hill Top","Home tourch","Hyewhyew Akyeremade","Justice Hotel","Juuben","Juuso","Kantenkyiren","Koffiekrom","Koiktum","Kokoben","Kokobra","Kokote","Komfo Anokye SHS","Konongo","Kontonpo","Krapa","Krapa Oldtown","Krofrom","Kromom Cement","Kromouse","Kronum Kwapra","Kulumu","Kuma","Kumawa","Kumeaboe","Kuwait","Kwame Tanokrom","Kyerekrom","Kyerensa","Limex","Maase","Mampong Effiduse","Mamponteng","Manso-Nkwanta","Menakrom","Merewadwa","Mfuom","Mile 14","Mile 9","Moscaso","Moshie Zonge","Mpatasic","Mpatuom","Naachia","Namong","Nerbehi","Nerebehi","New Nsata","Nfensi","Nkawie","Nkoainkwata","Nkwanta","Nsarta","Ntinanko","Nyameso","Nyametiase","Obo","Obogu","Odal\u0131m","Ofoase Kokoben","Ofori Stadium","Oforikrom","Old & New Suame","Onwe","Oseikrom","Parkoso","Part of Affordable Housing Akokoamon","Part of Ahwia","Part of Asouyebon","Part of Bohyen","Part of Duase","Part of Ejisu","Part of Kronum","Part of Low Cost","Part of Magazine","Part of Pankrono","Part of Paskoso","Part of Tanoso","Parts of Eusu","Pono","Purt of Abrepo","STC","Sawaba","Sawua and its environs","Sec Tech","Seidi","Sepaase","Sepetinpome","Sewaba","St. Paul Sch","Stadium","Staduim Hotel","Stadum","Suabo","Subinso","Suhyenso","Swedru","T.L","Taabom","Takwae","Takyeman","Tarkwa Maakro","Tech","Tetrem","Topreso","Traboom","Twedie","Twepease","Wawase","West Coast","Yabi","Yaw Asare","Yaw Nkrumah","Yawkwet","Zongo"].map(n => ({ neighborhood: n, region: "Ashanti East", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group A — TEMA
+  ...["ARS Church","Ablekuma","Abodakpi Farms","Abonko","Adjei Kodjo","Adjei Kodjo Township","Adjetey Ansah","Adom Estates","Afienya Taxi Station","Agbamami","Agortor","Apenyo","Asensu Bar","Ashaiman Timber Market","Aunty Kate","Avnash Residence","Awudu Issaka St Barkita","BBC","BBF","BOST","Baatsonma Total","Bake Shop","Bankurman","Bantsomaa Govemment School","Best Premier Hotel","Bethlehem","Buguin","CAC Imperial Peking","Celebrity Golf Club","Channel 5","Chase Petroleum","China Mall","Coco Beach","Comm 19","Comm 7","Comm. 2 Police Station","Crystal Medical Center","Datus","Don Bosco","Emef Estates","Emmanuel Estates","Father's Hotel","Frenchman","Fridays","Fuel Trade","Ghana Steel","Global","Goshen Ghetsile and its environs","HFC Estatex John Grey Estates","Halian Boys Pub","High Tension","High Tension Huena Vista Homes","Home and Away","Hot Oven","ICGC","Japan City","Jericho","Kakalika Plaza","Kaketo","Kan Em TT Brothers","Kanawu","Kent Estates","Kpeshie Police Headquarters","Kpogas","Kpone Dump Site","Kpone Kokompe","Kpoo Keke","Kyereme Junction","Lashibi","Later Day Saints","Leonardo","Lessure Hotel","Luta","MTN Junction","Macharon Charlets","Magna Terris","Manheam SHS","Marina Mall","Methodist Junction","Methodist junction","Middle East","Mirabake","Mobole","Mt Carmel","Naval Base","Naval Quarters","New Ningo","Njoy Hotel","Nungua Nshornaa","Nungua Secondary School","Nungua Town Park","Nungua Zongo","Okro Market","Old Ningo","Ososhie","Resolve Hospital","Roman Down","Sackey Golf City Police Station","Safisana","Sakumono Village Sakunone Estates","Sebrepor","Sethi Realty","Shell Signboard","Shiloh","Standard Chatered Bank","State School for the Deaf","Supreme Gas","Sydal Farms","TDC Shops","Tema International School","Tema New Town Lorry Station","Teteman","Timber Market","Toll Booth","Under Bridge Market","Valco Flats","Vodafon","WAPCo","White Estates","Wilmar Residence","Zimmerman Presbyterian Church","parts of Comm. 17","parts of Comm. 25 Bediako"].map(n => ({ neighborhood: n, region: "Tema", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group A — WESTERN
+  ...["Aboudre","Abuesi","AgonaPort","Ankwaso","Asafo","Bustua","Cape 3 pount","Diabene","Diaso","Discove","Enyinam","Henchena","Inchaban","Juabo","Kansawurodu","Mankesim","Mpanyiasa","Mt. Zion","New Obuasi","Nkroful","Ntankoful","Ntom","Nyankrom","Nyinawusu","Pewodie","Prestea township","Race course","Shama","Shama junction","Whundo"].map(n => ({ neighborhood: n, region: "Western", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group A — EASTERN
+  ...["Abesim","Abirem","Abompe","Adweso SSNIT Flat","Akateng","Akim Tafo Township","Akouse","Amanase","Anlo town","Anymam","Asesewa","Awenare","Boti Falls","CRIG","Capital View Annex","Capital View Hotel","Central Market","Charlie Junction","Domeabra","ECG District Office","Eastern Premier Hotel","Gyamase","Hudu","Huhunya","Joe Oduro and its environs","KTU","Kade","Kentenkeren","Klo Agogo","Koans Estate","Kowf Hotel","Kusi","Kwabeng","Kwame Dottoh","Kyekyewere","Larbikrom","Maase","Mouso","Munrovia","Nkurakan","Nobi","Noyem","Nsutam","Nsutapun","Obo","Obomeng","Okumaning","Osabene township","Osino","Part of Abepotia","Part of Bunso","Part of Okorase","Perchie","Pra River","Regional Hospital","Roman","Saaman","Samresi","Signboard","Speesdigle","Srodai","Starting Point","Tafo Sabon Zongo","Teacher Mantey","Tontro","Universal School","VHF","Valley Safari","Wisrwisi","Yan Botwe","and surrounding areas"].map(n => ({ neighborhood: n, region: "Eastern", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group A — CENTRAL
+  ...["1st, 2nd, 3rd Ridgs","Abie","Acquairium","Adisadel Estate","African Pot","Agona","Akroma","Akwanda","Amamuma","Amisano","Ankaful Mental","Ashanti Road","Assin Fosu town","Assin North & South","Atonkwan","Attabadze town and Village","Awuroso","Ayensodo","Bakano","Bamtama","Brase","Brenu Akyem","Brofoyedur","Central Regional Hospital","Chapel Square","Dompim","Duakro","ECG Main Office","Eguase","Ekon","Elmina Shell","Elmina Zongo","Elmina town","Esuakyir","Father's Hotel","Idan Nstin","Industral Area","Industrial Estate","Iture","Jubilee Sch","Kakumdo","Kissi","Komenda","Kotokruba Market","Kushia","Manso","Mfanstipim Flat","Mobole","Moree","Nkanfoa","Nkontrodo","Nungua Zongo","Ola Estate","Part of Ola township","Pedu Junction","Pedu township","Peshie","Petrol","Radio Central","Reg office","SNNIT Flat","Sanka","Sekyere Hemang","Sikafoambatem","Siwidu","St Augustine","compound"].map(n => ({ neighborhood: n, region: "Central", group: "A", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — ACCRA
+  ...["ARS","AU Estates","Abloradjei","Abossey Okai","Abossey Okai Central Mosque","Aburi SHS","Aburi Sec. Tech","Accra City Hotel","Accra Girls","Accra High School","Achimota Halt Tower","Achimota Market","Adjoa Wangara","Agape Junction","Agblezaa","Agbogbloshie","Agya Appiah","Agyemanti","Ahwerease","Ahwerease New Site","Ahwerease Teachers Bungalow","AirtelTigo HQ","Akatsi Abor","Akoshie Junction","Akramaman","Akrowa House","Akuaba Estates","Akweteman","Alioma","Alisa Hotel","Alisa Village","American Embassy","Appiah Danquah","Arabian Embassy","Aseidu Nketia","Asene Household","Ashale Botwe Old Town","Ashieye","Ashonman City","Ashonman Village","Association International School","Atinka Media","Atraco","Ayalolo","Ayi Mensah","Ayikai Doblo","Ayim","B-Opoku","BOG Hospital","Balloon Gate","Bambolino","Banana Inn","Bantsi asi","Blue Skies","Bohye","Bostal","Brainy Brain School","Brekusu","Burger Town","Busy Internet","CSIR","Cantonment","Capital Place","Cedar Court","Central Police Station (MTTD)","Century Industries","Christian Village","Citien Kofi","Coffee Shop","Comet Estates","Control Market","Dansoman Keep Fit","DevTraco Estates","Diamond House","Diamond Ridge","Djaman","Djen Ayor","Dr. Beechem","Dubois Center","Dunkona","EPPL","Embassy Hotel","Emefa Jewelleries","Epo","F. Malawi","Fa Asem Kyea","Falcon","Fast Track Court","Flamingo","Focos Hospital","Food Research","France Embassy","Francisca Tower","Frempongmaa Estates","Fulani","GCB Tower","GRA","GS Plaza","GWC La","Gbawe Bulemi","Gecko","Ghana Flag","Ghana International School","Ghana News Agency","Ghana Post","Ghana Standard Authority","Goil HQ","Gold House","Golf House","Golf Park","Gonse","Gravel Pit","Great Garden","Haatso Trotro Station","Haatso Yam Market","Hebron","Horizon Finance Levsing Co","Hydrofam Estates","IBE","Ikam","Iran Clinic","Japan Embassy","Junction","Kamara","Kaneshie Orange Market","King Solomon","Kings University","Kingsway","Kisseiman","Kit-Kat","Kitase","Knight Court","Koala","Kokompe","Kokrobitey","Korea Embassy","Kotobabi","Kottam Estates","Kukuhill","Kumbaya Hotel","Kwabina Adjei Homes","Kwashie-Bu","Kwashiebu","La Nkwantana","La Wireless Station","La- T junction","Labone","Labone GNTC","Langba","Latter Days Saints","Legon Botanical Gardens","Little Roses","Local Government","Lonso Park","Lord Care cold store","M&G Pharmaceuticals","MAB Hospital","MTN HQ","Mabruk Park","Mama's Inn","Mambo Spot","Mamobi","Mamponsee","Mangoasie","Mars Junction","Marvel House","Mascot","Mechanization","Mempeasem","Merchant Bank","Miklin Apartments","Morning Star","Movenpick","Mplaza Hotel","Multi TV","Musuku","NAFTI","NHIS HQ","NIC Top","Naa Densua","National Identification Authority","New Aplaku","New Bortianor","Newmont Ghana","Niagara","Nitra","Nkrumah Circle","Nmai Djorn","North Ridge Hotel","Nsawam Prisons","Nsumfa","Obama Hotel","Obeyeyie","Oblogo","Oceanic Resort","Okpoi Gonno","Okponkpo","Omanjor","Opera Square","Oscar","Osiadan","Osofo Dadzie","Osu Entertainment","Otorjor","Oyarifa","Oyarifa Township","Pantang Junction","Parks & Shops","Parts of Abeka Free Pipe","Parts of Abokobi","Parts of Adjorman","Parts of Airport Residential Area","Parts of Alhaji","Parts of Anyaa","Parts of Dansoman","Parts of Darkuman","Parts of Doblo","Parts of Dome","Parts of Greda Estates","Parts of Kokomlemle","Parts of Kwashieman","Parts of Lartebiokorshie","Parts of Mamprobi","Parts of Nanakrom","Parts of Nyamekye","Parts of Odorkor","Parts of Odorkor Official Town","Parts of Official Town","Parts of Ogbojo","Parts of Okonglo","Parts of Okpoi Gonno","Parts of Osu Oxford Street","Parts of Santamaria","Parts of Sowutuom","Parts of Weija Dam Site","Parts of Westland","Peduase Lodge","Pentecost Down","Pobiman","Point 1","Power Line","Providence Tower","Pure Fire","Pure Water","Race Course","Radio Gold","Red Top","Regimanuel Estates Spintex Rd","Registrar General","Roman Ridge Shopping Arcade","Russia","SDA Junction","SSNIT Flats","Sahara","School Junction","Seminary","Shaaba","Shalom Estates","Sikkens","Sober","Special Drink","Special Ice","Stages","Sukura Market","Supreme Court","Swiss Embassy","Tabora","Tang Palace Hotel","Tebibiano","Teiman Township","Terry Cot","Top Herbal","Tot-To Teen School","Treba","Trinity Seminary","Trust Hospital","TseAddo","Tsui Bleoo","Tuba","Twuamasiwaa Rounabout","Twumasiwaa Hospital","UG Business School","UPSA Hostel","VRA Flats","Village Gate","Vodafone","WAEC","Wisconsin University","Yahoman","Yomo Specs","Zongo Junction","part of Akporman","part of Asylum Down","part of Zabrama Line"].map(n => ({ neighborhood: n, region: "Accra East", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — VOLTA
+  ...["Abor","Abutia","Adaklu Kodzobi","Adina","Adutor","Aflao Lowcost","Agavedzi","Agbokope","Agorpenu","Akaa Towns","Akatsi Township","Akpafu Adorko","Akrofu","Alavanyo Towns","Asato","Atidzive","Avalavi","Avoeme","Awakome","Ayoma Towns","Baglo Lakanti","Beach","Cross border Towns","Dabala Town","Denu Lowcost","Dzrakate","Fodome Towns","Gafatsikope","Gbi Akplamafu","Gbledi Towns","Hedzranawo","Kadjebi","Kedzi","Keta","Klotekpo","Kute Buem Tetema","Likpe Towns","Live Towns","Logokukope","Lolobi Towns","Mount Sinai","Nkonya Towns","Nkwanta","Oklahoma","Part of UHAS main campus","Rainbow","Sogakope township","Sokode Lokoe","Tadzewu","Tordzinu","Torve","Tsavanya","Tsito Township and it's surroundings","Wli Towns","part of Ho Township","part of Jasikan","part of Kpando Towns","part of Liati Towns","part of Sokode Gborgame"].map(n => ({ neighborhood: n, region: "Volta", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — ASHANTI
+  ...["A-Lang","Abattoir","Abirem Zongo","Aboagyekrom","Abodom","Abramkese","Abrepokese","Abuakaw-Makro","Abusco","Adagya","Adesina","Adiebeba","Adoato","Adomanu","Aduamoah","Adubrem Penipa","Aduman","Adumasa","Afari","Afoako","Agona","Agric Amanfrom","Agya Appiah","Ahinsan","Ahodwo","Ahwiaa Adabraka","Ahwiaa Newsite","Ahwiaa Overseas","Akaporiso","Akom","Akrofrom","Akrofuom","Akrowa","Akwabuah","Akyena","Amanfrom","Amansie","Amoafo","Ampabame","Amponya","Anita Hotel","Antoa","Anwiam","Anyinam","Apagya","Appiah Menkah","Arokrom","Asaago","Asakraka","Asankari","Asanso","Asempenaye","Asenua","Ash Foam","Asiebu","Asikuma","Asokore","Asonkore","Asonomaso","Asubonteng","Ataase","Atasomanso","Atia","Atimatim Abrafi","Atoplans","Atrama","Ayegya Est","Ayegya Zongo","BLLC","Bekrose","Bekwai Bungalow","Bekwame","Besease","Boatenkrom","Bodoma","Bodwesango","Boete","Bokankye","Bomplex","Bomso","Bonfa","Bonkwaso","Bossman","Bost","Bouho","Brahabebume","Breman Nkwantwima","Brofoyedru","Bronkra","Buaben","Buabenso","CPC","Camp","China Estate","Christian Village","Coca Cola","Deawuoso Ayiase","Deeper Life Camp","Deeper Life Kwamang","Denase","Diamond hotel","Dichemso","Dwenenh","Ebenazer","Edwanfo","Effiduase","Egyakon Bouhol I & II","Esereso","Essiase","Essienimpong","Esumaja","Fankyenebra","Fankyrenbra","Goigoikrom","Gyankobaah","Habitat","Hiawu-Besease","Homase","Jachie","Jimiso","Jimiso Kakraba","Kaasi","Kentinkrono","Kodie","Koforidua","Kokofu","Kokosu","Kokotro","Koniyaw","Kontomire","Korkyerekrom","Kotwi","Kumawu","Kunso","Kuntenase","Kwabetusu","Kwabrafoso","Kwaso","Kyekyewere","Low Cost Est","Lowcost","Magazine","Mampong","Manhyia","Mankranso","Maxima Junction","Meduma Abass","Melcom","Menhyia","Mfensi","Moinssi Valley","Moro Market","Mpasatia","Nampansa","Nkawie","Nkransa","Nkwntakese","Nsenie","Nsuta","Ntensere","Nyankerenease","Odeneho Kwadaso","Odenehu Kwadaso","Ohwum","Okyerekrom","Old & New Suame","Opoku Transport","Pampaso","Pampatia","Part of Abirem","Part of Affordable Housing","Part of Asendua","Part of Bekwai Township","Part of Brofoyedru","Part of Fawoade","Part of Kokoben","Part of Kronum","Part of Kropo","Part of Medoma","Part of Meduma","Part of Santase","Part of Santasi","Parts of Magazine","Patasi","Pepedan","Petransa","Pomposo","Pramso","SDA SHSch","Sanfo Aduam","Santasi","Santasi Apire","Santasi Apire Amangoase","Sasa","Sebedie","Sepaase","Sisikro","Sokoban","Tabre","Tafo","Tafo New Road","Tafo Nhyiaeso","Tafo Zongo","Town","Tutuka","Wamasi","Water Office-Suame","Wawase","Westley Girls Sch","Wood village","Worakese","Yenyawoso","Zongo"].map(n => ({ neighborhood: n, region: "Ashanti East", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — TEMA
+  ...["Abbattoir","Abia","Able Academy School","Abrantie","Ada Foah","Adogonno","Adotey Prampram Junction","African Fish Anum","Agbeshie Laryea","Akrade","Akuaba Estates","Akwamufie","Alisa Hotel","Aponkye Clinic","Aqua Safari","Ashaiman Circuit Courts","Ashaiman Timber Market","Atimpoku","Aunty Araba","B'S Maternity","Basket","Big Ada","Boso","Cambodia","Central University","Charyass","Christian Village","Church of Brotherhood","City Escape","Clementina","Comm 17","Comm. 12","Comm. 22","Comm. 25 Mall Polystar","Comm. 5","Comm. 8","Dan Adams","Dawa","Dodi Asantekrom","European Market","FOS Aluminium","Fafali","Fintey","First Choice","Frankadua","Frenchman","Frimpamaa Estates","Full Gospel Church","Gbetsile","Ghana Water(Prampram)","Ghanaman Soccer Academy","Glow Lamp","HFC Estates","Home and Away","Irrigation","Jehova Witness Assembly Hall","Juapong","Kaseh","Katamanso","Kisifui","Kpoi Ete","Kpone Barrier","Kubekro","LEKMA Polyclinic","Lele Salt","Level 400","Lovely","Maranatha Church","Mavis Industries","Michell Camp","Middle East","Motorway Axle Station SRG Klagon","Motorway Total","Movelle","Nelplast","Noble Estates","Nudu","NutriFoods","Official Town","Palace Mall","Potter's City","Prampram Township","Railway Quarters","Rama Down","SOS","SOS Village","SSNIT Flats Comm. 5","Salvation Army","Santor","Sege","Senchi","Square D","Supreme Gas","TIS Basic School","Tanink","Temascho","Timber Market","Totope","Toyota Ghana Ltd","Treasure Island","Tsopoli","VEHOCS","Valco Residence","Volo","Youth With a Mission","parts of Coastal Estates","parts of Comm. 10"].map(n => ({ neighborhood: n, region: "Tema", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — WESTERN
+  ...["Adamanso","Afere","Afransie","Afuke","Aheinbenso","Akontombra","Akoon","Ankosia","Asikuma","Atobrakrom","Awudua","Bawdie","Bodi","Bogoso township","Bonsu Nkwanta","Brumasi","Budo City","Cape town","Cyanide","Dadieso","Duamasi","Essae","Ghana gas","Himan township","Kokoase Adjeikrom","Kwabedu","Kwemeniapa","Mumuni","Nanankor","New Atuabo","Nkonya","Oppon Valley","Saamaang","Samahu","Wassa Akropong","Wassa Japa","Wassa Saa","Wiawso","Woman no good","Yerase","amreaboi"].map(n => ({ neighborhood: n, region: "Western", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — EASTERN
+  ...["Abenabo","Abogiri","Adukrom","Adweso","Agavenya","Agona Ninta","Agyepongmaa","Akim Koforidua","Akim Sekyere","Akooko","Akorabo","Akote","Akroso","Amanfrom","Amanhyia","Ankoma","Apradang","Asakraka","Asamankese township","Asikam","Asouso","Asuboni Rails","Awenade","Ayerebi","Bantama","Begoro","Bepong","Besease","Bosuso","Bunso Ayigbe town","Bunso Lindador","Dadieso","ECG District Office","Enyiresi","Ettukrom","Etwereso","Fodua","Forest Gate","Ghalloway","Gyadam","Hemang","Jamaica","Jato","Jejeti towns","Kibi","Kofigya","Koradaso","Korle Nkwanta","Kotoso","Krofofrom","Kwahu Nsabah","Kwahu Praso","Kwahu Tafo","Medical Village","Miaso","Mpraeso Amanfrom","Nkawkaw Novotex","Nkawkaw Trador","Nkronso","Nkwateng","Obourho","Oframase","Osiem","Pano","Pinora Industries","Potroase","Roman","Saafi","Teacher Atta","Trom","Two Streams","Yayo","Zongo","part of Asamankese town"].map(n => ({ neighborhood: n, region: "Eastern", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group B — CENTRAL
+  ...["1st, 2nd, 3rd Ridgs","Abie","Acquairium","Adisadel Estate","African Pot","Agona","Akroma","Akwanda","Amamuma","Amisano","Ankaful Mental","Ashanti Road","Assin Fosu town","Assin North & South","Atonkwan","Attabadze town and Village","Awuroso","Ayensodo","Bakano","Bamtama","Brase","Brenu Akyem","Brofoyedur","Central Regional Hospital","Chapel Square","Dompim","Duakro","ECG Main Office","Eguase","Ekon","Elmina Shell","Elmina Zongo","Elmina town","Esuakyir","Father's Hotel","Idan Nstin","Industral Area","Industrial Estate","Iture","Jubilee Sch","Kakumdo","Kissi","Komenda","Kotokruba Market","Kushia","Manso","Mfanstipim Flat","Mobole","Moree","Nkanfoa","Nkontrodo","Nungua Zongo","Ola Estate","Part of Ola township","Pedu Junction","Pedu township","Peshie","Petrol","Radio Central","Reg office","SNNIT Flat","Sanka","Sekyere Hemang","Sikafoambatem","Siwidu","St Augustine","compound"].map(n => ({ neighborhood: n, region: "Central", group: "B", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — ACCRA
+  ...["A- Lang","Abeka Market","Abelemkpe","Academic City University","Achimota Police Station","Achimota School","Adom Clinic","Adom Gate","Agbadzenaa","Agege Lorry Park","Agya Appiah","Agyeman Katta","Ajirigannor","Akokor Photo","Akramaman","Alajo","Alisa Hotel","Amasaman","American","Ampomaa Estates","Anoff","Asare Original Pay All","Asylum Down","Atomic Commission","Atomic Hotel","Aviation","Awoshie Baah yard","Awoshie Water Works","Ayidiki","Ayigbe Town","Baiden Powers","Bawaleshie and its enirons","Beyeeman","Blue Skies","Boshye","Broadcasting Last Stop","Bubiashie Cable & Wireless","Bulk Press","Burgar Town","Cadbury","Chantan","Charleston Hotel","Chemuanaa","Children Hospital","Choice","Chorkor","Coffee Shop","Comet Estate","Community 5","Dan Wright","Danfa","Dansoman Beach Road","Dansoman Last Stop","De-Georgia Motors","Dobro","Dodowa Hospital","Dome Pillar","Doryimu","Dorwulu","Dromonaa","East Legon Hills","Ebony","Ecoblock","Eno Mirekua","Fair Heaven","Family Health Hospital","Firestone","Flag","Flower Pot","Forestry Commission","Fountain Gate","Frafraha","Frankies","Franko Estates","Ga-Odumase","GBC Quarters","Gbegbeyisee","Gegedekum","Geological Survey","Gicel","Glefe","Gyamfi Apartment","Haatso Ecomog","Hebron","Honda Place","Janus Ltd","Jarpanya","Jehovah Witness","KPOGAS","KFC","Karikari Brobbey Park","Kasapa","Kinsby","Kordiabe","Korle Gonno","Kotobabi Down","Kotoku","La Beach Road","La Presby","La Wireless","Labone","Lake Side Comm. 8","Lecacy Closet","Letap Jewelleries","McBright Tower","Madina Social Welfare","Madina Zongo Junction","Mallam Abease","Mallam Market","Mandela","Mangoase","Marwako","Massalatsi","Maye Hot","Maye Hot and its environs","Medie","Mile 11","Mile 7","Mogya Biedon","Morning Star School","Mother Love","Muus","Nii Boi Town","Nima","Nima Gutter","Nima Market","Nima Rounabout","Nkansah Djan","Nsawam Hospital","Nsawam Market","Nyamekye","Oak Plaza Hotel","Odorgonnor","Opah","Palace Mall","Palladium","Paradise Estate","Paradise Lodge","Part of Fadama","Part of Ofankor","Parts","Parts of Airport Hills","Parts of Ashale Botwe","Parts of Bortianor","Parts of camp 2 taxi rank last stop","Parts of Dorwulu","Parts of Gbawe","Parts of Gonse","Parts of James Town","Parts of John Teye","Parts of Maye Hot","Parts of New Achimota","Parts of Pokuase Township","Parts of South Industrial Area","Parts of West Ridge","Peace Be","Peace Village","Pere Dome","Petroleum","Petroleum Commission","Piabor","Prisons","Quality Insurance","RedCo Flats","Regimanuel","Rehoboth Estate","Reservoir","Rosa Rosa","Rowi Junction","SDA Southern HQ","SSNIT Flat Tantra Hill","Sakoa Press","Sakyikrom","Salaga Market","Sapeiman","Satikrom","Sempe","Shikpontele","Soja Line","Sonitra","Spot M","St Mary SHS","St. John","St. Peters","Tantra Hill","Tebibiano Masalatsi area","Tebibianor road","Teiman","Teiman Township","Tenor","Tesano","Teshie Maami","Tetegu","Timber Market","Toman","Top Base","Tse Addo","Vineyard","Weija Junction","Wiaborman","Wisdom Square","Zanzibar","Zita Lane","part Agyeman","part of Ofankor","part of Sampa Valley"].map(n => ({ neighborhood: n, region: "Accra East", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — VOLTA
+  ...["Afiadenyigba","Agbozume","Agorhokpo","Agorhome","Agotime towns","Agordome","Agonu towns","Akpokope","Angloga","Apesukobi","Ave towns","Aveme towns","Ayeremu","Batume junction","Bedzame","Comboni","Dambai","Djaglame","Dzodze","Ehi towns","Honugo","Kabusu","Katanga","Keklebesi","Kepnu","Klikor","Kopeyia","Kpalime Duga Toh Duga Tsibu","Kpando Todzi","Kpando Togorme","Kpetoe","Kpeve Township","Nakyikope","New Kaira","Nogokpo","Oklahoma","Peki and its surroundings","Sarakope","South Dayi","Sovie","SPACO","Svietula","Taskcorner","Tokor","Tsrukpe towns","Vakpo","Waterworks","Weta towns","Wusuta towns","Ziope towns","part of Akatsi Towns","part of Ho Township","part of Hohoe Township","part of Keta","part of Oklahoma"].map(n => ({ neighborhood: n, region: "Volta", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — ASHANTI
+  ...["A-life","Abakomade","Aboabo","AbusuakruwaRoman Hill","Adagya","Adumasa","Adwumam","Adwumam Newsite","Afia Kobi Market","Agogo","Agona","Agya Appiah","Ahinsan Est","Akate Farms","Akawatia-Line","Akrokerri Training College","Akutuase","Alabar","Alhaji Awal","Ampabame No. 1 & 2","Anhiwiaso","Anyanso","Apatrapa","Apemso","Apire","Appantubuom","Asare Farms","Asawase Market","Asawasi","Asiwa","Asokwa","Asuoyeboa","Atonsu","Atonsu S- line","Atwereboma","Ayanfuri Town","Ayeduase","Bantama","Bebu","Bedieso","Behwe","Beposo","Bimma","Boadi","Boankra Port","Boko","Bomfa","Bompata","Bomso","Bosore","Breman UGC","Breman West","Breku","Bribiwormang","Brofoyedu","Bronikrom","Buokrom","Buokrom Est","Buokrom South Africa","CAC University","Charpatre","Cocoa Clinic","Council Quarters","Crystal Hostel","Cultural Centre","Dako","Dakwadwum","Denase","Domeabra","Duapopom","Duase","Dwereso","Edwinase","Emina","Esaase","Esereso","Fanti Newtown","Fereboye","Fumesua","Fumso","Gausu","Georgia Hostel","Ghana Hostel","Gyinyase","Hemman","Hwidiem","Hwiremoase","KPoly","KTI","KNUST","Kajetei","Kenkaese","Kenyase","Kenyase Tewubabi","Kobease","Kokoben","Kokobra","Konom","Kontonpomi","Kotei","Kronom","Kubease","Kunka","Kwabemnakwa","Kwadaso","Kwadaso Estate","Kwadaso Market","Kwadaso Nsoum","Kwadaso Ohwumase","Kwamo","Kwamo Highways","Kwanwoma","Kwapia","Kyekyebiase","Kyekyewere Barrier","Kyiraburoso","Mampamhwe","Mampong","Maxima","Mbrom","Mensakrom","Mim","Mpatase","Nana Ponko","New Brodakwaw","New Dochiwaa","New Edubiase","Nimo","Nobewam","Nsuta","Nwamase","Nwamasi","Nyaboo","Nyameani","Nyamebekyere","Nyamesomye","Obenemase","Oforikrom","Ofoase","Old Akrofuom","Pakyi No. 1&2","Pankrono Abed","Pankrono Est","Pantin","Paramount","Part of Abuakwa","Part of Adum","Part of lanoso","Part of Pankrono","Parts of Ejisu","Patase","Pekyerekye","Peminase","Petransa","Piase","Pipiiso","Pokukrom","Police Depot","Praso","Roman Girls","Roman Hill","SIC","SSNIT Flat","Sabin Akrofrom","Santase Roundabout","Sepe","Sesease","STC","Susanso","Susanekyre","TUC","Tanoso","Teacher Nkwanta","Tewobebi","Trede","Truba","UCE-K'si","Wabiri","Wioso","Yegola Hotel","Zaabo Zongo","Zongo Police Station","Zoom Lion Factory"].map(n => ({ neighborhood: n, region: "Ashanti East", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — TEMA
+  ...["Adom FM","Adukrom Pumping Station","Afienya Zongo","Agomanya","Apollonia","Asutsuare","Atadeka","BNI Flats","Boiko","Bulasu","Bundase Military Training Camp","C&J Medical Centre","Casilda Estates","Christian International School","Cocobod Flats","Comm 3","Comm 4","Comm 9 Market and its environs","Comm. 11","Comm. 19 Annex","Comm. 25","Data Center Elegant Homes","Dawhenya Township","Devtraco Estates","ECG Flats","EMEF Estates","Fiankonya","GNPC Flats","Gbetsile Junction","Gbetsile Lorry Station","Ghana Prisons","Golden Exotics","IMaH","Joe Manu","KFC","Kakasunaka #1","Katamanso","Kportitse Kope","Lashibi Funeral Homes","Lashibi Klagon","Legacy Girls","Lower Manya District Assebly Ofice","Magotsonya","Michell Camp Gate","Nuaso","OLAM SHS","Okro Garden","P. S Global","PUMA Filling Station","Pharmanova","Promised Land","Regional Maritime University","Saglemi Housing","Shai Osudoku","Songo Salt","Spintex Junction","St Martins' Hospital","TOR Flats","VRA/GRIDCo Flats","Valco Flats Market","Vivian Farms","Volivo","Yellow Signboard","Zenu","parts of Comm. 11","parts of Jericho","parts of Mobole"].map(n => ({ neighborhood: n, region: "Tema", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — WESTERN
+  ...["Adiembra","Adientem","Adum Banso","Amanteng","Apowa","Apremdo","Asasetre","Assakae","Bamiako","Breman","Collins Avenue","Dominase Nkwanta","Dupaul","Fijai","Gyeduakese","Juaboso","Kejebir","Kwabeng","Kweikuma","Manso","Mpatado","Mpohor","New Amanful","New site","Nkroful","Repso hills","Takoradi Beach road","Takoradi police reserve","Telekubokazo"].map(n => ({ neighborhood: n, region: "Western", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — EASTERN
+  ...["Abetifi","Abene","Achiase","Adukrom Nyensi","Akim Oda Post Office","Akim Swedru SHS","Akanteng","Akoro Nyensi","Amantopong","Anweaso","Asasekorkor","As\u0131kuma","Atiankama Nkwanta","Atekyem","Bula Spot","Community 6","Densu","Domeabra","Duakon","ECG District Office","Effiduase","Eredecs","Esaaso","GHANASS","Hweehwee","Konko","Kubriso","Magazine","Mangoase","Mepom","Nkwatia","Nyamekrom","Nyanoa","Nyankomase","Oda Quarters","Osenase","PURC","Paradise","Part of Old Estate","Pepease","Pipeline","Police Barracks","Residency","Suhum township","Tei-Nkwanta","Timber Market","Tinkong","Wawaso","and surrounding areas"].map(n => ({ neighborhood: n, region: "Eastern", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" })),
+  // Group C — CENTRAL
+  ...["94 Washing Bay","Akosua Village","Akoti","Akweley","American town","Anigye-Krom","Asamoa","Bonsuoko","Breku","Budunburam","Colomba","Colombo","Congo Villa","Denchira","Domeabra","Esukyir","Evalip","Galilea Market","Gateway","Ghaadze","Gomoah Fetteh","Kpormotey Ashalaja","Kontokole","Kuwait","Lawyer","Menges","New Castle","New Mrket","Newtown","Nkwantenan","Nurses quarters","Nyanyanu","Ojobi","Okyereko","Opeikuma","Otta City","Part of Mellennuim City","Roman","Sandema","Senya","TV3","Teacher Block Factory","Tipper Junction","Top town","Wallantu","Winger","Yoo Mart"].map(n => ({ neighborhood: n, region: "Central", group: "C", outage_date: null, outage_time_start: null, outage_time_end: null, source: "v3_2_migration" }))
+];
+
+// ─── TIER 3: buildSearchIndex ──────────────────────────────────────────────
+// Merges DISTRICTS (authoritative) + SCHEDULED_OUTAGES (dynamic) at runtime.
+// Districts are always present. Neighborhoods are overlaid on top.
+// The `group` field is preserved from SCHEDULED_OUTAGES for schedule logic.
+function buildSearchIndex() {
+  const index = [];
+
+  // Phase 1: Insert all districts (no group — not on a schedule by default)
+  for (const [region, districts] of Object.entries(DISTRICTS)) {
+    for (const district of districts) {
+      index.push({
+        name: district,
+        type: "district",
+        group: null,
+        region: region,
+        scheduled_outage: null
+      });
     }
   }
+
+  // Phase 2: Push ALL outage records as individual entries.
+  // Do NOT deduplicate here — the same neighbourhood can appear in multiple
+  // groups (e.g. TseAddo in A, B and C), and the ambiguity detection logic
+  // in renderResults() depends on finding multiple entries with the same name.
+  for (const outage of SCHEDULED_OUTAGES) {
+    const outageInfo = (outage.outage_date)
+      ? { outage_date: outage.outage_date, outage_time_start: outage.outage_time_start, outage_time_end: outage.outage_time_end }
+      : null;
+
+    index.push({
+      name: outage.neighborhood,
+      type: "neighborhood",
+      group: outage.group,
+      region: outage.region,
+      scheduled_outage: outageInfo
+    });
+  }
+
+  return index;
 }
+
+const SEARCH_INDEX = buildSearchIndex();
 
 const SLOTS = [
   { key: "00:00-06:00", label: "Night", start: 0, end: 6 },
