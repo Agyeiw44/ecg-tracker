@@ -6,7 +6,6 @@
 <title>ECG Outage Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     /* Light Mode Colors - Brand Update */
@@ -407,6 +406,7 @@
     border-radius: 4px;
     flex-shrink: 0;
   }
+  .area-card-group:empty, .favourite-card-group:empty { display: none; }
 
   [data-theme="dumsor"] .area-card-group { background: var(--accent-light); color: var(--accent); }
 
@@ -1064,16 +1064,8 @@
 </footer>
 
 <script>
-// ─── Supabase ─────────────────────────────────────────────────────────────────
-const db = window.supabase.createClient(
-  'https://vkrwpzbvnonvmtxqjmfy.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrcndwemJ2bm9udm10eHFqbWZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5NDIyOTAsImV4cCI6MjA5MzUxODI5MH0.dQ_Mh49PiJYSn4aVfzhtaoAho_Am5U5xgxH5axK99SI'
-);
-
 // ─── Data ─────────────────────────────────────────────────────────────────────
-// Hardcoded fallback — used if Supabase fetch fails.
-// loadLiveData() overwrites timetable and SCHEDULED_OUTAGES at init.
-let DATA = {
+const DATA = {
   meta: { title: "800MW Load Management Timetable", period: "Saturday 25 Apr – Friday 1 May 2026", source: "ECG 800MW Global Load Management Time Table", last_updated: "2026-04-27" },
   schedule: {
     timetable: {
@@ -1087,60 +1079,6 @@ let DATA = {
     }
   }
 };
-
-async function loadLiveData() {
-  try {
-    const today = new Date();
-    const pad = n => String(n).padStart(2, '0');
-    const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-    const from = new Date(today); from.setDate(today.getDate() - 1);
-    const to   = new Date(today); to.setDate(today.getDate() + 14);
-
-    // Fetch timetable rows and neighbourhood list in parallel
-    const [schedRes, neighRes] = await Promise.all([
-      db.from('scheduled_outages')
-        .select('load_group, scheduled_date, slot_key')
-        .gte('scheduled_date', fmt(from))
-        .lte('scheduled_date', fmt(to))
-        .order('scheduled_date', { ascending: true }),
-      db.from('neighbourhoods')
-        .select('neighbourhood_name, load_group, regions(region_name)')
-        .limit(3000)
-    ]);
-
-    // Build timetable: { "2026-05-10": { "06:00-12:00": "B", ... }, ... }
-    if (!schedRes.error && schedRes.data.length > 0) {
-      const timetable = {};
-      for (const row of schedRes.data) {
-        if (!row.scheduled_date || !row.slot_key || !row.load_group) continue;
-        if (!timetable[row.scheduled_date]) timetable[row.scheduled_date] = {};
-        timetable[row.scheduled_date][row.slot_key] = row.load_group;
-      }
-      DATA.schedule.timetable = timetable;
-      const dates = Object.keys(timetable).sort();
-      DATA.meta.last_updated = dates[dates.length - 1];
-    }
-
-    // Replace SCHEDULED_OUTAGES with live neighbourhood list
-    if (!neighRes.error && neighRes.data.length > 0) {
-      SCHEDULED_OUTAGES.length = 0;
-      for (const n of neighRes.data) {
-        SCHEDULED_OUTAGES.push({
-          neighborhood: n.neighbourhood_name,
-          region: n.regions?.region_name || 'Unknown',
-          group: n.load_group || null,
-          outage_date: null,
-          outage_time_start: null,
-          outage_time_end: null,
-          source: 'supabase'
-        });
-      }
-    }
-
-  } catch (err) {
-    console.warn('Supabase fetch failed, using hardcoded fallback:', err.message);
-  }
-}
 
 // ─── V3.3 Data Architecture ──────────────────────────────────────────────────
 // TIER 1: DISTRICTS — authoritative ECG district list (source: ecg.com.gh)
@@ -1289,7 +1227,7 @@ function buildSearchIndex() {
   return index;
 }
 
-let SEARCH_INDEX = buildSearchIndex();
+const SEARCH_INDEX = buildSearchIndex();
 
 const SLOTS = [
   { key: "00:00-06:00", label: "Night", start: 0, end: 6 },
@@ -1436,7 +1374,7 @@ function renderResults(results, query) {
     return `<div class="area-card" onclick="selectArea(${origIdx})">
       <div class="area-card-main">
         <span class="area-card-name">${r.name}</span>
-        <span class="area-card-group">Group ${r.group}</span>
+        <span class="area-card-group">${r.group ? `Group ${r.group}` : ''}</span>
       </div>
       <div class="area-card-region"><strong>${r.region}</strong></div>
     </div>`;
@@ -1482,7 +1420,7 @@ function showStatus(area) {
   const card = document.getElementById('statusCard');
   card.classList.add('visible');
   document.getElementById('areaName').textContent = area.name;
-  document.getElementById('groupBadge').textContent = `Group ${area.group} · ${area.region}`;
+  document.getElementById('groupBadge').textContent = area.group ? `Group ${area.group} · ${area.region}` : area.region;
 
   // Update star button
   updateStarButton();
@@ -1664,7 +1602,7 @@ function renderFavourites() {
           <button class="favourite-card-delete" onclick="event.stopPropagation(); removeFavourite(${idx})" title="Remove from favourites">×</button>
           <div class="favourite-card-header">
             <span class="favourite-card-name">${area.name}</span>
-            <span class="favourite-card-group">Group ${area.group}</span>
+            <span class="favourite-card-group">${area.group ? `Group ${area.group}` : ''}</span>
           </div>
           <div class="favourite-card-region"><strong>${area.region}</strong></div>
         </div>
@@ -1721,15 +1659,8 @@ function shareViaX() {
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
-(async () => {
-  updateDateDisplay();
-  setInterval(updateDateDisplay, 30000);
-  await loadLiveData();
-  // Rebuild search index now that SCHEDULED_OUTAGES may be updated
-  SEARCH_INDEX.length = 0;
-  buildSearchIndex().forEach(item => SEARCH_INDEX.push(item));
-  renderFavourites();
-})();
+updateDateDisplay();
+setInterval(updateDateDisplay, 30000);
 </script>
 </body>
 </html>
