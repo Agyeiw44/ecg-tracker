@@ -1278,7 +1278,8 @@ function buildSearchIndex() {
       type: "neighborhood",
       group: outage.group,
       region: outage.region,
-      scheduled_outage: outageInfo
+      scheduled_outage: outageInfo,
+      source: outage.source || null
     });
   }
 
