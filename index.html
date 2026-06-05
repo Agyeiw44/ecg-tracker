@@ -407,6 +407,7 @@
     border-radius: 4px;
     flex-shrink: 0;
   }
+  .area-card-group:empty, .favourite-card-group:empty { display: none; }
 
   [data-theme="dumsor"] .area-card-group { background: var(--accent-light); color: var(--accent); }
 
@@ -1071,8 +1072,7 @@ const db = window.supabase.createClient(
 );
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-// Hardcoded fallback — used if Supabase fetch fails.
-// loadLiveData() overwrites timetable and SCHEDULED_OUTAGES at init.
+// Hardcoded fallback — used only if Supabase fetch fails.
 let DATA = {
   meta: { title: "800MW Load Management Timetable", period: "Saturday 25 Apr – Friday 1 May 2026", source: "ECG 800MW Global Load Management Time Table", last_updated: "2026-04-27" },
   schedule: {
@@ -1096,19 +1096,21 @@ async function loadLiveData() {
     const from = new Date(today); from.setDate(today.getDate() - 1);
     const to   = new Date(today); to.setDate(today.getDate() + 14);
 
-    // Fetch timetable rows and neighbourhood list in parallel
-    const [schedRes, neighRes] = await Promise.all([
+    const [schedRes, neighRes, latestRes] = await Promise.all([
       db.from('scheduled_outages')
-        .select('load_group, scheduled_date, slot_key')
+        .select('load_group, scheduled_date, slot_key, created_at')
         .gte('scheduled_date', fmt(from))
         .lte('scheduled_date', fmt(to))
         .order('scheduled_date', { ascending: true }),
       db.from('neighbourhoods')
         .select('neighbourhood_name, load_group, regions(region_name)')
-        .limit(3000)
+        .limit(3000),
+      db.from('scheduled_outages')
+        .select('created_at')
+        .order('created_at', { ascending: false })
+        .limit(1)
     ]);
 
-    // Build timetable: { "2026-05-10": { "06:00-12:00": "B", ... }, ... }
     if (!schedRes.error && schedRes.data.length > 0) {
       const timetable = {};
       for (const row of schedRes.data) {
@@ -1117,12 +1119,19 @@ async function loadLiveData() {
         timetable[row.scheduled_date][row.slot_key] = row.load_group;
       }
       DATA.schedule.timetable = timetable;
-      const dates = Object.keys(timetable).sort();
-      DATA.meta.last_updated = dates[dates.length - 1];
     }
 
-    // Replace SCHEDULED_OUTAGES with live neighbourhood list
+    // Update footer with most recent ingestion date — independent of date window
+    if (!latestRes.error && latestRes.data.length > 0) {
+      const formatted = new Date(latestRes.data[0].created_at).toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      const el = document.querySelector('.last-updated');
+      if (el) el.innerHTML = `<strong>Last updated:</strong> ${formatted} — ECG official announcements`;
+    }
+
     if (!neighRes.error && neighRes.data.length > 0) {
+      window.SUPABASE_NEIGHBOURHOODS = neighRes.data;
       SCHEDULED_OUTAGES.length = 0;
       for (const n of neighRes.data) {
         SCHEDULED_OUTAGES.push({
@@ -1282,14 +1291,15 @@ function buildSearchIndex() {
       type: "neighborhood",
       group: outage.group,
       region: outage.region,
-      scheduled_outage: outageInfo
+      scheduled_outage: outageInfo,
+      source: outage.source || null
     });
   }
 
   return index;
 }
 
-let SEARCH_INDEX = buildSearchIndex();
+let SEARCH_INDEX = [];
 
 const SLOTS = [
   { key: "00:00-06:00", label: "Night", start: 0, end: 6 },
@@ -1436,7 +1446,7 @@ function renderResults(results, query) {
     return `<div class="area-card" onclick="selectArea(${origIdx})">
       <div class="area-card-main">
         <span class="area-card-name">${r.name}</span>
-        <span class="area-card-group">Group ${r.group}</span>
+        <span class="area-card-group">${r.group ? `Group ${r.group}` : ''}</span>
       </div>
       <div class="area-card-region"><strong>${r.region}</strong></div>
     </div>`;
@@ -1482,7 +1492,7 @@ function showStatus(area) {
   const card = document.getElementById('statusCard');
   card.classList.add('visible');
   document.getElementById('areaName').textContent = area.name;
-  document.getElementById('groupBadge').textContent = `Group ${area.group} · ${area.region}`;
+  document.getElementById('groupBadge').textContent = area.group ? `Group ${area.group} · ${area.region}` : area.region;
 
   // Update star button
   updateStarButton();
@@ -1664,7 +1674,7 @@ function renderFavourites() {
           <button class="favourite-card-delete" onclick="event.stopPropagation(); removeFavourite(${idx})" title="Remove from favourites">×</button>
           <div class="favourite-card-header">
             <span class="favourite-card-name">${area.name}</span>
-            <span class="favourite-card-group">Group ${area.group}</span>
+            <span class="favourite-card-group">${area.group ? `Group ${area.group}` : ''}</span>
           </div>
           <div class="favourite-card-region"><strong>${area.region}</strong></div>
         </div>
@@ -1725,7 +1735,6 @@ function shareViaX() {
   updateDateDisplay();
   setInterval(updateDateDisplay, 30000);
   await loadLiveData();
-  // Rebuild search index now that SCHEDULED_OUTAGES may be updated
   SEARCH_INDEX.length = 0;
   buildSearchIndex().forEach(item => SEARCH_INDEX.push(item));
   renderFavourites();
