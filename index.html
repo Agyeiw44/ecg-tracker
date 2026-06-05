@@ -1127,7 +1127,7 @@ async function loadLiveData() {
         day: 'numeric', month: 'long', year: 'numeric'
       });
       const el = document.querySelector('.last-updated');
-      if (el) el.innerHTML = `<strong>Last updated:</strong> ${formatted} — Source: ECG live schedule data`;
+      if (el) el.innerHTML = `<strong>Last updated:</strong> ${formatted} — ECG official announcements`;
     }
 
     if (!neighRes.error && neighRes.data.length > 0) {
