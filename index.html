@@ -1096,15 +1096,19 @@ async function loadLiveData() {
     const from = new Date(today); from.setDate(today.getDate() - 1);
     const to   = new Date(today); to.setDate(today.getDate() + 14);
 
-    const [schedRes, neighRes] = await Promise.all([
+    const [schedRes, neighRes, latestRes] = await Promise.all([
       db.from('scheduled_outages')
-        .select('load_group, scheduled_date, slot_key')
+        .select('load_group, scheduled_date, slot_key, created_at')
         .gte('scheduled_date', fmt(from))
         .lte('scheduled_date', fmt(to))
         .order('scheduled_date', { ascending: true }),
       db.from('neighbourhoods')
         .select('neighbourhood_name, load_group, regions(region_name)')
-        .limit(3000)
+        .limit(3000),
+      db.from('scheduled_outages')
+        .select('created_at')
+        .order('created_at', { ascending: false })
+        .limit(1)
     ]);
 
     if (!schedRes.error && schedRes.data.length > 0) {
@@ -1115,6 +1119,15 @@ async function loadLiveData() {
         timetable[row.scheduled_date][row.slot_key] = row.load_group;
       }
       DATA.schedule.timetable = timetable;
+    }
+
+    // Update footer with most recent ingestion date — independent of date window
+    if (!latestRes.error && latestRes.data.length > 0) {
+      const formatted = new Date(latestRes.data[0].created_at).toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      const el = document.querySelector('.last-updated');
+      if (el) el.innerHTML = `<strong>Last updated:</strong> ${formatted} — Source: ECG live schedule data`;
     }
 
     if (!neighRes.error && neighRes.data.length > 0) {
